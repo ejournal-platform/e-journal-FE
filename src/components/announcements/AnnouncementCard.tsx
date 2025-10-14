@@ -13,7 +13,7 @@ interface Props {
 
 const AnnouncementCard = ({ announcement }: Props) => {
     return (
-        <div className="flex justify-between border-b border-gray-200 py-6 last:border-b-0">
+        <div className="flex justify-between p-6 border border-gray-200 rounded-lg shadow-lg mb-6 bg-white">
             {/* 📝 Left Text Section */}
             <div className="flex-1 pr-6">
                 <p className="text-sm text-gray-500 mb-1">{announcement.date}</p>

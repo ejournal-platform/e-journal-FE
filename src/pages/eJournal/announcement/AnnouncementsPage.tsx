@@ -1,6 +1,6 @@
 // src/pages/eJournal/AnnouncementsPage.tsx
 import { type ReactNode } from "react";
-import AnnouncementList from "../../components/announcements/AnnouncementList";
+import AnnouncementList from "../../../components/announcements/AnnouncementList";
 
 interface Announcement {
     id: number;

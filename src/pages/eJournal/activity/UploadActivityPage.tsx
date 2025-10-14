@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 // import Sidebar from "../../components/layout/Sidebar";
-import FileUpload from "../../components/activity/FileUpload";
-import FilePreview from "../../components/activity/FilePreview";
-import ActivityForm from "../../components/activity/ActivityForm";
+import FileUpload from "../../../components/activity/FileUpload";
+import FilePreview from "../../../components/activity/FilePreview";
+import ActivityForm from "../../../components/activity/ActivityForm";
 
 const UploadActivityPage: React.FC = () => {
   const [activityTitle, setActivityTitle] = useState("");

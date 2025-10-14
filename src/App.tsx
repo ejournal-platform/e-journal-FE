@@ -1,4 +1,3 @@
-// src/App.tsx
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -14,14 +13,13 @@ import ProfilePage from "./pages/profile/ProfilePage";
 import DashboardLayout from "./layouts/DashboardLayout";
 
 // eJournal pages
-import UploadActivityPage from "./pages/eJournal/UploadActivityPage";
-// import SubmissionsPage from "./pages/eJournal/SubmissionsPage";
-// import AnnouncementsPage from "./pages/eJournal/AnnouncementsPage";
+import UploadActivityPage from "./pages/eJournal/activity/UploadActivityPage";
+import MySubmissionsPage from "./pages/eJournal/submission/MySubmissionsPage";
+import AnnouncementsPage from "./pages/eJournal/announcement/AnnouncementsPage";
 // import CommunityPage from "./pages/eJournal/CommunityPage";
 
 import { type UserRole } from "./components/ui/Input";
 import "./App.css";
-import AnnouncementsPage from "./pages/eJournal/AnnouncementsPage";
 
 // --- Simple role-based dashboard wrapper (can expand later) ---
 const DashboardWrapper: React.FC<{ role: UserRole }> = ({ role }) => {
@@ -77,7 +75,8 @@ const App: React.FC = () => {
           <Route path="/dashboard" element={<DashboardLayout />}>
             <Route path="upload" element={<UploadActivityPage />} />
             <Route path="announcements" element={<AnnouncementsPage />} />
-            {/* <Route path="submissions" element={<SubmissionsPage />} />
+             <Route path="submissions" element={<MySubmissionsPage />} />
+            {/*
             <Route path="announcements" element={<AnnouncementsPage />} />
             <Route path="community" element={<CommunityPage />} /> */}
           </Route>
