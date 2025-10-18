@@ -64,10 +64,10 @@ const LoginPage = ({ onLogin }: LoginPageProps) => {
   return (
     <div className="min-h-screen w-full bg-gray-50 flex flex-col font-sans">
       {/* Header */}
-      <header className="py-4 px-6 w-full">
+      <header className="py-2 px-6 w-full">
         <div className="flex items-center text-xl font-bold text-gray-800 font-sans">
           <span className="mr-2">
-            <img src={logo} alt="App Logo" className="h-6 w-6 object-contain" />
+            <img src={logo} alt="App Logo" className="h-12 w-12 object-contain" />
           </span>
           Food Safety Watch
         </div>

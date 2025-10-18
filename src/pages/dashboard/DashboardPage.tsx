@@ -30,9 +30,7 @@ const DashboardPage = ({ nic, role }: DashboardPageProps) => {
   }
 };
 
-
-
-  const handleProfileClick = () => {
+const handleProfileClick = () => {
   navigate("/profile"); // if using React Router
 };
 
@@ -42,7 +40,7 @@ const DashboardPage = ({ nic, role }: DashboardPageProps) => {
       <header className="py-4 px-4 sm:px-6 bg-white shadow-md border-b border-gray-100 z-10">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center text-lg sm:text-xl font-bold text-gray-800">
-            <img src={logo} alt="Logo" className="h-8 w-auto mr-2" />
+            <img src={logo} alt="Logo" className="h-10 w-auto mr-2" />
             <span className="whitespace-nowrap">Food Safety Watch</span>
           </div>
 

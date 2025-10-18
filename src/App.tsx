@@ -16,7 +16,7 @@ import DashboardLayout from "./layouts/DashboardLayout";
 import UploadActivityPage from "./pages/eJournal/activity/UploadActivityPage";
 import MySubmissionsPage from "./pages/eJournal/submission/MySubmissionsPage";
 import AnnouncementsPage from "./pages/eJournal/announcement/AnnouncementsPage";
-// import CommunityPage from "./pages/eJournal/CommunityPage";
+import CommunityPage from "./pages/eJournal/community/CommunityPage";
 
 import { type UserRole } from "./components/ui/Input";
 import "./App.css";
@@ -76,9 +76,10 @@ const App: React.FC = () => {
             <Route path="upload" element={<UploadActivityPage />} />
             <Route path="announcements" element={<AnnouncementsPage />} />
              <Route path="submissions" element={<MySubmissionsPage />} />
+             <Route path="community" element={<CommunityPage />} />
             {/*
             <Route path="announcements" element={<AnnouncementsPage />} />
-            <Route path="community" element={<CommunityPage />} /> */}
+             */}
           </Route>
         )}
 

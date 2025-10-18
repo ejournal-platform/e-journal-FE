@@ -6,7 +6,7 @@ interface ProfilePageProps {
   onBack: () => void; // to navigate back to Dashboard
 }
 
-export const ProfilePage: FC<ProfilePageProps> = ({ onBack }) => {
+export const ProfilePage = ({ onBack } : ProfilePageProps) => {
   const [profile, setProfile] = useState({
     fullName: "",
     email: "",
