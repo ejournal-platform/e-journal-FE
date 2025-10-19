@@ -19,10 +19,6 @@ const DashboardLayout = ({ nic, role }: DashboardLayoutProps) => {
     role: role,
   });
 
-  const handleProfileClick = () => {
-    navigate("/profile");
-  };
-
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
 
@@ -33,10 +29,7 @@ const DashboardLayout = ({ nic, role }: DashboardLayoutProps) => {
           <span className="whitespace-nowrap">Food Safety Watch</span>
         </div>
 
-        <div
-          className="flex items-center space-x-3 cursor-pointer hover:text-green-600 transition"
-          onClick={handleProfileClick}
-        >
+        <div className="flex items-center space-x-3 hover:text-green-600 transition">
           <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 border-2 border-green-500 text-green-700">
             <FiUser className="w-5 h-5" />
           </div>

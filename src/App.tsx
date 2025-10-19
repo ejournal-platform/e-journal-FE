@@ -4,11 +4,10 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 
 import LoginPage from "./pages/Auth/LoginPage";
-import DashboardPage from "./pages/dashboard/DashboardPage";
+// import DashboardPage from "./pages/dashboard/DashboardPage";
 import ProfilePage from "./pages/profile/ProfilePage";
 import DashboardLayout from "./layouts/DashboardLayout";
 
@@ -22,15 +21,15 @@ import { type UserRole } from "./components/ui/Input";
 import "./App.css";
 
 // --- Simple role-based dashboard wrapper (can expand later) ---
-const DashboardWrapper: React.FC<{ role: UserRole }> = ({ role }) => {
-  return <DashboardPage role={role} />;
-};
+// const DashboardWrapper: React.FC<{ role: UserRole }> = ({ role }) => {
+//   return <DashboardPage role={role} />;
+// };
 
 // --- Profile wrapper to use navigate ---
-const ProfileWrapper = () => {
-  const navigate = useNavigate();
-  return <ProfilePage onBack={() => navigate("/dashboard")} />;
-};
+// const ProfileWrapper = () => {
+//   const navigate = useNavigate();
+//   return <ProfilePage onBack={() => navigate("/dashboard")} />;
+// };
 
 const App: React.FC = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,7 +58,7 @@ const App: React.FC = () => {
         />
 
         {/* --- Dashboard main cards --- */}
-        <Route
+        {/* <Route
           path="/dashboard"
           element={
             isLoggedIn && userRole ? (
@@ -68,15 +67,20 @@ const App: React.FC = () => {
               <Navigate to="/login" replace />
             )
           }
-        />
+        /> */}
 
         {/* --- Sidebar Layout Pages (E-Journal Section) --- */}
-        {isLoggedIn && (
-          <Route path="/dashboard" element={<DashboardLayout />}>
+        {isLoggedIn && userRole && (
+          <Route path="/dashboard" element={<DashboardLayout role={userRole} nic={userNic} />}>
+           {/* view community section after login first */}
+            <Route index element={<Navigate to="community" replace />} />
+
+            {/* inner pages */}
             <Route path="upload" element={<UploadActivityPage />} />
             <Route path="announcements" element={<AnnouncementsPage />} />
-             <Route path="submissions" element={<MySubmissionsPage />} />
-             <Route path="community" element={<CommunityPage />} />
+            <Route path="submissions" element={<MySubmissionsPage />} />
+            <Route path="community" element={<CommunityPage />} />
+            <Route path="profile" element={<ProfilePage />} />
             {/*
             <Route path="announcements" element={<AnnouncementsPage />} />
              */}
@@ -84,7 +88,7 @@ const App: React.FC = () => {
         )}
 
         {/* --- Profile Route --- */}
-        <Route
+        {/* <Route
           path="/profile"
           element={
             isLoggedIn ? (
@@ -93,7 +97,7 @@ const App: React.FC = () => {
               <Navigate to="/login" replace />
             )
           }
-        />
+        /> */}
 
         {/* --- Default Redirect --- */}
         <Route path="/" element={<Navigate to="/login" replace />} />

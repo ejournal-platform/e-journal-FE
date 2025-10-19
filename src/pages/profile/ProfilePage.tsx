@@ -1,12 +1,7 @@
-import React, { useState, type FC, type FormEvent } from "react";
-import { FiUser, FiMail, FiPhone, FiArrowLeft, FiSave } from "react-icons/fi";
-import logo from "../../assets/logo.png";
+import React, { useState, type FormEvent } from "react";
+import { FiUser, FiMail, FiPhone, FiSave } from "react-icons/fi";
 
-interface ProfilePageProps {
-  onBack: () => void; // to navigate back to Dashboard
-}
-
-export const ProfilePage = ({ onBack } : ProfilePageProps) => {
+export const ProfilePage = () => {
   const [profile, setProfile] = useState({
     fullName: "",
     email: "",
@@ -37,18 +32,17 @@ export const ProfilePage = ({ onBack } : ProfilePageProps) => {
   return (
     <div className="min-h-screen w-full bg-gray-50 flex flex-col font-sans overflow-x-hidden">
       {/* Header */}
-      <header className="py-4 px-4 sm:px-6 bg-white shadow-md border-b border-gray-100 z-10 flex items-center justify-between">
+      {/* <header className="py-4 px-4 sm:px-6 bg-white shadow-md border-b border-gray-100 z-10 flex items-center justify-between">
         <div className="flex items-center text-xl font-bold text-gray-800 font-sans">
           <img src={logo} alt="Logo" className="h-8 w-auto mr-2" />
           Food Safety Watch
         </div>
         <button
-          onClick={onBack}
           className="flex items-center bg-green-50 p-2 hover:bg-green-400 rounded-md text-green-600 hover:text-white transition font-medium"
         >
           <FiArrowLeft className="mr-1" /> Back to Dashboard
         </button>
-      </header>
+      </header> */}
 
       {/* Main Content */}
       <main className="flex-grow flex items-center justify-center p-6">
