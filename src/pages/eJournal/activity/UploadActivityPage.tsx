@@ -28,7 +28,7 @@ const UploadActivityPage: React.FC = () => {
   // };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-gray-200">
       {/* Sidebar */}
       {/* <Sidebar
         userRole="Field Officer"

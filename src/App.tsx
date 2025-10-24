@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,12 +6,11 @@ import {
   Navigate,
 } from "react-router-dom";
 
-import LoginPage from "./pages/Auth/LoginPage";
-// import DashboardPage from "./pages/dashboard/DashboardPage";
+import SignIn from "./pages/Auth/SignIn";
+import SignUp from "./pages/Auth/SignUp";
 import ProfilePage from "./pages/profile/ProfilePage";
 import DashboardLayout from "./layouts/DashboardLayout";
 
-// eJournal pages
 import UploadActivityPage from "./pages/eJournal/activity/UploadActivityPage";
 import MySubmissionsPage from "./pages/eJournal/submission/MySubmissionsPage";
 import AnnouncementsPage from "./pages/eJournal/announcement/AnnouncementsPage";
@@ -20,21 +19,14 @@ import CommunityPage from "./pages/eJournal/community/CommunityPage";
 import { type UserRole } from "./components/ui/Input";
 import "./App.css";
 
-// --- Simple role-based dashboard wrapper (can expand later) ---
-// const DashboardWrapper: React.FC<{ role: UserRole }> = ({ role }) => {
-//   return <DashboardPage role={role} />;
-// };
-
-// --- Profile wrapper to use navigate ---
-// const ProfileWrapper = () => {
-//   const navigate = useNavigate();
-//   return <ProfilePage onBack={() => navigate("/dashboard")} />;
-// };
-
-const App: React.FC = () => {
+const App = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userRole, setUserRole] = useState<UserRole | null>(null);
   const [userNic, setUserNic] = useState<string>("");
+
+ const [users, setUsers] = useState<
+    { nic: string; password: string; role: UserRole }[]
+  >([]);
 
   const handleLogin = (nic: string, role: UserRole) => {
     setUserNic(nic);
@@ -42,65 +34,56 @@ const App: React.FC = () => {
     setIsLoggedIn(true);
   };
 
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setUserRole(null);
+    setUserNic("");
+  };
+
   return (
     <Router>
       <Routes>
-        {/* --- Public Login Page --- */}
+        {/* --- Public signIn Page --- */}
         <Route
-          path="/login"
+          path="/signIn"
           element={
             isLoggedIn ? (
               <Navigate to="/dashboard" replace />
             ) : (
-              <LoginPage onLogin={handleLogin} />
+              <SignIn onLogin={handleLogin} users={users} />
             )
           }
         />
 
-        {/* --- Dashboard main cards --- */}
-        {/* <Route
-          path="/dashboard"
+        {/* --- Public signUp Page --- */}
+         <Route
+          path="/signup"
           element={
-            isLoggedIn && userRole ? (
-              <DashboardWrapper role={userRole} />
+            isLoggedIn ? (
+              <Navigate to="/dashboard" replace />
             ) : (
-              <Navigate to="/login" replace />
+              <SignUp users={users} setUsers={setUsers}/>
             )
           }
-        /> */}
+        />
 
         {/* --- Sidebar Layout Pages (E-Journal Section) --- */}
-        {isLoggedIn && userRole && (
-          <Route path="/dashboard" element={<DashboardLayout role={userRole} nic={userNic} />}>
-           {/* view community section after login first */}
+       {isLoggedIn && userRole && (
+          <Route
+            path="/dashboard"
+            element={<DashboardLayout role={userRole} nic={userNic} onLogout={handleLogout} />}
+          >
             <Route index element={<Navigate to="community" replace />} />
-
-            {/* inner pages */}
             <Route path="upload" element={<UploadActivityPage />} />
             <Route path="announcements" element={<AnnouncementsPage />} />
             <Route path="submissions" element={<MySubmissionsPage />} />
             <Route path="community" element={<CommunityPage />} />
             <Route path="profile" element={<ProfilePage />} />
-            {/*
-            <Route path="announcements" element={<AnnouncementsPage />} />
-             */}
           </Route>
         )}
 
-        {/* --- Profile Route --- */}
-        {/* <Route
-          path="/profile"
-          element={
-            isLoggedIn ? (
-              <ProfileWrapper />
-            ) : (
-              <Navigate to="/login" replace />
-            )
-          }
-        /> */}
-
         {/* --- Default Redirect --- */}
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<Navigate to="/signIn" replace />} />
 
         {/* --- 404 Fallback --- */}
         <Route path="*" element={<h2>404 - Page Not Found</h2>} />

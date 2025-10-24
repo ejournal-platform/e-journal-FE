@@ -30,7 +30,7 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-50 flex flex-col font-sans overflow-x-hidden">
+    <div className="min-h-screen w-full bg-gray-200 flex flex-col font-sans overflow-x-hidden">
       {/* Header */}
       {/* <header className="py-4 px-4 sm:px-6 bg-white shadow-md border-b border-gray-100 z-10 flex items-center justify-between">
         <div className="flex items-center text-xl font-bold text-gray-800 font-sans">

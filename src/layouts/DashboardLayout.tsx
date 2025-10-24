@@ -8,9 +8,10 @@ import type { UserRole } from "../components/ui/Input";
 interface DashboardLayoutProps {
   nic?: string;
   role: UserRole;
+  onLogout?: () => void;
 }
 
-const DashboardLayout = ({ nic, role }: DashboardLayoutProps) => {
+const DashboardLayout = ({ nic, role, onLogout}: DashboardLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -49,11 +50,12 @@ const DashboardLayout = ({ nic, role }: DashboardLayoutProps) => {
               currentPath={location.pathname}
               navigate={navigate}
               userRole={user.role || ''}
+              logOut={onLogout}
             />
           </div>
         </aside>
         {/* Page Content */}
-        <main className="flex-1 ml-64 p-6 overflow-y-auto h-[calc(100vh-4rem)]">
+        <main className="flex-1 ml-64 p-6 bg-gray-200 overflow-y-auto h-[calc(100vh-4rem)]">
           <Outlet />
         </main>
       </div>
