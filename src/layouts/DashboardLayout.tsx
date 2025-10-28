@@ -1,8 +1,8 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/layout/Sidebar";
 import logo from "../assets/logo.png";
-import { FiUser } from "react-icons/fi";
-import { useState } from "react";
+import { FiUser, FiMenu, FiX } from "react-icons/fi";
+import {  useState } from "react";
 import type { UserRole } from "../components/ui/Input";
 
 interface DashboardLayoutProps {
@@ -11,28 +11,51 @@ interface DashboardLayoutProps {
   onLogout?: () => void;
 }
 
-const DashboardLayout = ({ nic, role, onLogout}: DashboardLayoutProps) => {
+const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   const [user] = useState({
     name: nic || "User",
     role: role,
   });
 
+    const handleLogOut = () => {
+    if (onLogout) {
+      onLogout();
+      navigate('/signIn')
+    } else {
+      console.warn('LogOut function not provided')
+    }
+  }
+
   return (
     <div className="min-h-screen bg-gray-50 font-sans flex flex-col">
+      {/* Header */}
+      <header className="fixed top-0 left-0 right-0 h-16 bg-white shadow-md border-b border-gray-100 z-40 flex items-center justify-between px-4 sm:px-6">
+        <div className="flex items-center space-x-2">
+          {/* Mobile menu button */}
+          <button
+            className="lg:hidden text-gray-700 hover:text-green-600"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+          >
+            {isSidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+          </button>
 
-      {/* Fixed Header (Full Width) */}
-      <header className="fixed top-0 left-0 right-0 h-16 bg-white shadow-md border-b border-gray-100 z-30 flex items-center justify-between px-6">
-        <div className="flex items-center text-lg sm:text-xl font-bold text-gray-800">
-          <img src={logo} alt="Logo" className="h-10 w-auto mr-2" />
-          <span className="whitespace-nowrap">Food Safety Watch</span>
+          <div className="flex items-center text-lg sm:text-xl font-bold text-gray-800">
+            <img src={logo} alt="Logo" className="h-8 w-auto sm:h-10 mr-2" />
+            <span className="whitespace-nowrap text-sm sm:text-base md:text-lg">
+              Food Safety Watch
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center space-x-3 hover:text-green-600 transition">
-          <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 border-2 border-green-500 text-green-700">
-            <FiUser className="w-5 h-5" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-green-100 border-2 border-green-500 text-green-700">
+            <FiUser className="w-4 h-4 sm:w-5 sm:h-5" />
           </div>
           <p className="text-gray-600 text-xs sm:text-sm">
             Role:{" "}
@@ -41,23 +64,78 @@ const DashboardLayout = ({ nic, role, onLogout}: DashboardLayoutProps) => {
         </div>
       </header>
 
-      {/* Main Body (Sidebar + Content) */}
+      {/* Main Body */}
       <div className="flex flex-1 pt-16">
-        {/* Sidebar */}
-        <aside className={"fixed top-16 left-0 w-64 bottom-0 bg-white border-r border-gray-200 shadow-sm z-30 overflow-hidden"}>
-          <div className="h-full w-full max-w-full">
-            <Sidebar
-              currentPath={location.pathname}
-              navigate={navigate}
-              userRole={user.role || ''}
-              logOut={onLogout}
-            />
-          </div>
+        {/* Sidebar (responsive) */}
+        <aside
+          className={`fixed top-16 bottom-0 bg-white border-r border-gray-200 shadow-sm z-30 transition-transform duration-300 ease-in-out
+            ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:w-64 w-64`}
+        >
+          <Sidebar
+            currentPath={location.pathname}
+            navigate={(path) => {
+              navigate(path);
+              setIsSidebarOpen(false);
+            }}
+            userRole={user.role || ""}
+            openLogoutCard={() => setShowConfirm(true)}
+          />
         </aside>
+
+        {/* Overlay for mobile when sidebar is open */}
+        {isSidebarOpen && (
+          <div
+            onClick={() => setIsSidebarOpen(false)}
+            className="fixed inset-0 bg-black/40 z-20 lg:hidden"
+          ></div>
+        )}
+
         {/* Page Content */}
-        <main className="flex-1 ml-64 p-6 bg-gray-200 overflow-y-auto h-[calc(100vh-4rem)]">
+        <main
+          className={`
+            flex-1 p-4 sm:p-6 bg-gray-100 overflow-y-auto
+            h-[calc(100vh-4rem)]
+            transition-all duration-300
+            ${isSidebarOpen ? "blur-sm lg:blur-0" : ""}
+            lg:ml-64
+          `}
+        >
           <Outlet />
         </main>
+
+        {/* --- Confirm Logout Modal --- */}
+      {showConfirm && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-600/60 bg-opacity-1000 z-50">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-80 text-center">
+            <h2 className="text-lg font-bold text-gray-800 mb-4">
+              Confirm Logout
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Are you sure you want to log out?
+            </p>
+
+            <div className="flex justify-center space-x-4">
+              <button
+                onClick={() => setShowConfirm(false)}
+                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={() => {
+                  setShowConfirm(false);
+                  handleLogOut();
+                }}
+                className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       </div>
     </div>
   );

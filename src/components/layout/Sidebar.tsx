@@ -6,7 +6,7 @@ interface SidebarProps {
   userRole: string;
   currentPath: string;
   navigate: (path: string) => void;
-  logOut?: () => void;
+  openLogoutCard?: () => void;
 }
 
 const navItems = [
@@ -16,21 +16,11 @@ const navItems = [
   { name: "Announcements", icon: MdCampaign, path: "/dashboard/announcements" },
 ];
 
-const Sidebar = ({ currentPath, navigate, logOut }: SidebarProps) => {
-  const [showConfirm, setShowConfirm] = useState(false);
+const Sidebar = ({ currentPath, navigate, openLogoutCard }: SidebarProps) => {
 
   const handleProfileClick = () => {
     navigate("/dashboard/profile");
   };
-
-  const handleLogOut = () => {
-    if (logOut) {
-      logOut();
-      navigate('/signIn')
-    } else {
-      console.warn('LogOut function not provided')
-    }
-  }
 
   const isProfileActive = currentPath === '/dashboard/profile'
 
@@ -78,46 +68,13 @@ const Sidebar = ({ currentPath, navigate, logOut }: SidebarProps) => {
           </button>
 
           <button
-            onClick={() => setShowConfirm(true)}
+            onClick={() => openLogoutCard?.()}
             className='flex text-md text-gray-600 hover:text-red-500 hover:font-bold items-center w-full text-left p-3 transition'>
             <FiLogOut className="h-5 w-5 mr-3" />
             Logout
           </button>
         </div>
       </aside>
-
-      {/* --- Confirm Logout Modal --- */}
-      {showConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-600/60 bg-opacity-1000 z-50">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-80 text-center">
-            <h2 className="text-lg font-bold text-gray-800 mb-4">
-              Confirm Logout
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to log out?
-            </p>
-
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={() => setShowConfirm(false)}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowConfirm(false);
-                  handleLogOut();
-                }}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </>
   );
 };

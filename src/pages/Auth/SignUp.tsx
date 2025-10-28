@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Input, RoleSelector, type UserRole } from "../../components/ui/Input";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/logo.png";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface User {
   nic: string;
@@ -143,7 +144,7 @@ const Signup = ({ users, setUsers }: SignupProps) => {
             onClick={() => setShowPassword(!showPassword)}
             className="absolute top-8 right-3 text-gray-500 hover:text-gray-700"
           >
-            {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
+            {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
           </button>
         </div>
 
