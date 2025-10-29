@@ -135,7 +135,6 @@ const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
           </div>
         </div>
       )}
-
       </div>
     </div>
   );

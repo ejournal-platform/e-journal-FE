@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { FiLogOut, FiSettings } from "react-icons/fi";
 import { MdAssignment, MdCampaign, MdLibraryBooks, MdGroups } from "react-icons/md";
 
