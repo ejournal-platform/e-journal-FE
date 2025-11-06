@@ -9,8 +9,8 @@ interface SidebarProps {
 }
 
 const navItems = [
-  { name: "Community", icon: MdGroups, path: "/dashboard/community" },
-  { name: "E-Journal", icon: MdLibraryBooks, path: "/dashboard/upload" },
+  { name: "Community Feed", icon: MdGroups, path: "/dashboard/community" },
+  { name: "Upload Activity", icon: MdLibraryBooks, path: "/dashboard/upload" },
   { name: "My Submissions", icon: MdAssignment, path: "/dashboard/submissions" },
   { name: "Announcements", icon: MdCampaign, path: "/dashboard/announcements" },
 ];

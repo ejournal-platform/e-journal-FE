@@ -29,13 +29,13 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
     let updated = [...likedPosts];
 
     if (hasLiked) {
-      // 🔹 Unlike: remove post from likedPosts
+      // Unlike: remove post from likedPosts
       updated = likedPosts.filter((id: number) => id !== post.id);
       localStorage.setItem("likedPosts", JSON.stringify(updated));
       setLikes((prev) => prev - 1);
       setHasLiked(false);
     } else {
-      // 🔹 Like: add post to likedPosts
+      // Like: add post to likedPosts
       updated.push(post.id);
       localStorage.setItem("likedPosts", JSON.stringify(updated));
       setLikes((prev) => prev + 1);
@@ -107,7 +107,7 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
       </div>
 
 
-      {/* 🔽 Comments Section */}
+      {/* Comments Section */}
       {showComments && (
         <div className="mt-4 space-y-3">
           {comments.length === 0 && (
