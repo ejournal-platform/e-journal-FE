@@ -142,7 +142,7 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
       </main>
 
       <footer className="py-4 text-center text-xs text-gray-500 w-full">
-        Powered by an NGO Project on Food Safety
+        Powered by The Uni Digital
       </footer>
     </div>
   );

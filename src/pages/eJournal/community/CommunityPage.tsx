@@ -1,4 +1,3 @@
-import { useState } from "react";
 import CommunityPostCard from "../../../components/community/CommunityPostCard";
 import type { CommunityPost } from "../../../components/community/types";
 
@@ -10,8 +9,7 @@ export const mockPosts: CommunityPost[] = [
 ];
 
 const CommunityPage = () => {
-  // 🟢 NEW: manage posts state (to update likes/comments)
-  const [posts, setPosts] = useState<CommunityPost[]>(mockPosts);
+  const posts = mockPosts;
   
 //   const handleLike = (id: number) => {
 //     setPosts(prev =>
@@ -36,7 +34,7 @@ const CommunityPage = () => {
       </h1>
 
       {/* Post Creation Area */}
-      <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg mb-6 border border-green-200">
+      {/* <div className="bg-white p-4 sm:p-6 rounded-xl shadow-lg mb-6 border border-green-200">
         <p className="text-gray-600 mb-3">Share your activities or tips with the community...</p>
         <div className="flex items-center space-x-3">
           <input
@@ -48,7 +46,7 @@ const CommunityPage = () => {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Feed */}
       <div className="space-y-6">
