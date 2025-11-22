@@ -1,7 +1,7 @@
 import { type InputHTMLAttributes, type FC, useState } from 'react';
 import { FiChevronDown } from 'react-icons/fi';
 
-export type UserRole = 'MasterTrainer' | 'TOT' | 'EndUser' | 'Staff' | null;
+export type UserRole = 'MasterTrainer' | 'TOT' | 'EndUser' | 'Admin' | null;
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label: string;
@@ -35,7 +35,7 @@ export const RoleSelector: FC<{ value: UserRole; onChange: (role: UserRole) => v
   value,
   onChange,
 }) => {
-  const roles: Exclude<UserRole, null>[] = ['MasterTrainer', 'TOT', 'EndUser', 'Staff'];
+  const roles: Exclude<UserRole, null>[] = ['MasterTrainer', 'TOT', 'EndUser', 'Admin'];
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSelect = (role: Exclude<UserRole, null>) => {

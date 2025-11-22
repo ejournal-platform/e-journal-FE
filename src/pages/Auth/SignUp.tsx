@@ -21,7 +21,8 @@ const validateNicAndRole = (nic: string, role: UserRole) => {
   if (nic.startsWith("1") && role === "MasterTrainer") return true;
   if (nic.startsWith("2") && role === "TOT") return true;
   if (nic.startsWith("3") && role === "EndUser") return true;
-  if (nic.startsWith("4") && role === "Staff") return true;
+  if (nic.startsWith("798164171V") && role === "Admin") return true;
+  if (nic.startsWith("199573801049") && role === "Admin") return true;
   return false;
 };
 
@@ -180,8 +181,8 @@ const Signup = ({ users, setUsers }: SignupProps) => {
           type="submit"
           className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-lg font-bold text-white mt-6 ${
             isLoading
-              ? "!bg-green-400 cursor-not-allowed"
-              : "!bg-green-600 hover:!bg-green-700 transition duration-150"
+              ? "bg-green-400 cursor-not-allowed"
+              : "bg-green-600 hover:bg-green-700 transition duration-150"
           }`}
         >
           Sign Up
