@@ -23,6 +23,7 @@ const validateNicAndRole = (nic: string, role: UserRole) => {
   if (nic.startsWith("3") && role === "EndUser") return true;
   if (nic.startsWith("798164171V") && role === "Admin") return true;
   if (nic.startsWith("199573801049") && role === "Admin") return true;
+  if (nic.startsWith("199251103506") && role === "Admin") return true;
   return false;
 };
 
