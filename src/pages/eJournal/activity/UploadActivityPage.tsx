@@ -69,10 +69,8 @@ const UploadActivityPage: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-200">
-      <main className="flex-grow p-8">
-        <h1 className="text-3xl font-extrabold text-gray-900 mb-6">Upload Activity</h1>
-
+    <div className="flex min-h-screen">
+      <main className="grow p-8">
         <form onSubmit={handleSubmit} className="space-y-8">
           <ActivityForm
             activityTitle={activityTitle}

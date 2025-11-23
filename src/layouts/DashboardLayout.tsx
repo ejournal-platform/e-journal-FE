@@ -2,9 +2,9 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/layout/Sidebar";
 import logo from "../assets/logo.jpg";
 import { FiUser, FiMenu, FiX } from "react-icons/fi";
-import {  useState } from "react";
+import { useState } from "react";
 import type { UserRole } from "../components/ui/Input";
-
+import bgImage from '../assets/background/bg2.jpeg'
 interface DashboardLayoutProps {
   nic?: string;
   role: UserRole;
@@ -23,7 +23,7 @@ const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
     role: role,
   });
 
-    const handleLogOut = () => {
+  const handleLogOut = () => {
     if (onLogout) {
       onLogout();
       navigate('/signIn')
@@ -93,48 +93,58 @@ const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
         {/* Page Content */}
         <main
           className={`
-            flex-1 p-4 sm:p-6 bg-gray-100 overflow-y-auto
-            h-[calc(100vh-4rem)]
-            transition-all duration-300
-            ${isSidebarOpen ? "blur-sm lg:blur-0" : ""}
-            lg:ml-64
-          `}
+    relative flex-1 overflow-hidden h-[calc(100vh-4rem)]
+    transition-all duration-300
+    ${isSidebarOpen ? "blur-sm lg:blur-0" : ""}
+    lg:ml-64
+    bg-gray-50 
+  `}
         >
-          <Outlet />
+          <div className="absolute inset-0 z-0">
+            <img
+              src={bgImage}
+              alt="Background"
+              className="w-full h-full object-cover opacity-20"
+            />
+          </div>
+          <div className="relative h-full z-10 p-4 sm:p-6 overflow-y-auto">
+            <Outlet />
+          </div>
+
         </main>
 
         {/* --- Confirm Logout Modal --- */}
-      {showConfirm && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-600/60 bg-opacity-1000 z-50">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-80 text-center">
-            <h2 className="text-lg font-bold text-gray-800 mb-4">
-              Confirm Logout
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Are you sure you want to log out?
-            </p>
+        {showConfirm && (
+          <div className="fixed inset-0 flex items-center justify-center bg-gray-600/60 bg-opacity-1000 z-50">
+            <div className="bg-white rounded-xl shadow-lg p-6 w-80 text-center">
+              <h2 className="text-lg font-bold text-gray-800 mb-4">
+                Confirm Logout
+              </h2>
+              <p className="text-gray-600 mb-6">
+                Are you sure you want to log out?
+              </p>
+              
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={() => setShowConfirm(false)}
+                  className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition"
+                >
+                  Cancel
+                </button>
 
-            <div className="flex justify-center space-x-4">
-              <button
-                onClick={() => setShowConfirm(false)}
-                className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg font-semibold hover:bg-gray-300 transition"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={() => {
-                  setShowConfirm(false);
-                  handleLogOut();
-                }}
-                className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition"
-              >
-                Logout
-              </button>
+                <button
+                  onClick={() => {
+                    setShowConfirm(false);
+                    handleLogOut();
+                  }}
+                  className="bg-red-600 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-700 transition"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
       </div>
     </div>
   );

@@ -110,9 +110,6 @@ const mockAnnouncements: Announcement[] = [
 const AnnouncementsPage = () => {
   return (
     <div className="p-4 sm:p-6 md:p-8 w-full max-w-5xl mx-auto">
-      <h1 className="text-2xl sm:text-3xl font-extrabold text-gray-900 mb-6 sm:mb-8 text-center sm:text-left">
-        Announcements
-      </h1>
       <div className="grid gap-4 sm:gap-6">
         <AnnouncementList announcements={mockAnnouncements} />
       </div>

@@ -10,7 +10,7 @@ export const ProfilePage = () => {
     email: "",
     phone: "",
     whatsapp: "",
-    districy: "",
+    district: "",
     role: "EndUser",
     image: "",
   });
@@ -38,7 +38,7 @@ export const ProfilePage = () => {
   return (
     <div className="min-h-screen w-full bg-gray-200 flex flex-col font-sans overflow-x-hidden">
       {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center p-6">
+      <main className="grow flex items-center justify-center p-6">
         <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8 border border-gray-100">
           <div className="flex flex-col items-center mb-8">
             <div className="relative">
@@ -163,7 +163,7 @@ export const ProfilePage = () => {
                   type="text"
                   name="district"
                   placeholder="District"
-                  value={profile.districy}
+                  value={profile.district}
                   onChange={handleChange}
                   className="w-full bg-transparent outline-none text-gray-800"
                   required
