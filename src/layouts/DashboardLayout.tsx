@@ -104,7 +104,7 @@ const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
             <img
               src={bgImage}
               alt="Background"
-              className="w-full h-full object-cover opacity-20"
+              className="w-full h-full object-cover opacity-30"
             />
           </div>
           <div className="relative h-full z-10 p-4 sm:p-6 overflow-y-auto">
@@ -123,7 +123,7 @@ const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
               <p className="text-gray-600 mb-6">
                 Are you sure you want to log out?
               </p>
-              
+
               <div className="flex justify-center space-x-4">
                 <button
                   onClick={() => setShowConfirm(false)}
