@@ -182,7 +182,7 @@ const Signup = ({ users, setUsers }: SignupProps) => {
 
           <button
             type="submit"
-            className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-lg font-bold text-white mt-6 ${isLoading
+            className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-md font-bold text-white mt-6 ${isLoading
               ? "bg-green-400 cursor-not-allowed"
               : "bg-green-600 hover:bg-green-700 transition duration-150"}`}
           >
