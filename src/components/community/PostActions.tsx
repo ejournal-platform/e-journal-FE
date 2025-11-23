@@ -63,6 +63,10 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
 
   // Download mock file
   const handleDownload = async () => {
+
+    // imageUrl එක නැත්නම් download එක පටන් ගන්නේ නැතුව නවතින්න කියල මේකෙන් කියනවා.
+    if (!post.imageUrl) return;
+    
     setDownloading(true);
     try {
       const response = await fetch(post.imageUrl);
