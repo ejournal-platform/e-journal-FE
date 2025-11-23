@@ -26,6 +26,7 @@ export interface PostWithDetailsResponse extends PostResponse {
     mediaUrls: string[]; // 🟢 From backend
     isLiked: boolean;
     comments: CommentWithAuthorResponse[];
+    status: string; // 🟢 PENDING, APPROVED, REJECTED
 }
 
 export interface AuthorResponse {
@@ -116,3 +117,26 @@ export const useDownloadPost = () => {
         }
     })
 }
+
+export const useMyPosts = () => {
+    return useQuery({
+        queryKey: ['myPosts'],
+        queryFn: async () => {
+            const response = await client.get<PostWithDetailsResponse[]>('/posts/my');
+            return response.data;
+        },
+    });
+};
+
+export const useDeletePost = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const response = await client.delete(`/posts/${id}`);
+            return response.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['myPosts'] });
+        },
+    });
+};
