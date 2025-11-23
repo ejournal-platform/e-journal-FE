@@ -55,7 +55,6 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
     setNewComment("");
   };
 
-  // Delete own comment only
   const handleDeleteComment = (id: number, user: string) => {
     if (user !== CURRENT_USER) return; // not allowed
     setComments((prev) => prev.filter((c) => c.id !== id));
@@ -87,7 +86,7 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
 
   return (
     <div className="mt-4 border-t border-gray-100 pt-3">
-      <div className="flex flex-row justify-between mt-4 border-t border-gray-100 pt-3 space-y-2 sm:space-y-0 sm:space-x-4 text-center">
+      <div className="flex flex-row justify-center mt-4 border-t border-gray-100 pt-3 space-y-2 sm:space-y-0 sm:space-x-4 items-center">
         {/* Like */}
         <div>
            <button
