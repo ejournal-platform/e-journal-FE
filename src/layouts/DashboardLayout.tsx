@@ -1,6 +1,6 @@
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Sidebar from "../components/layout/Sidebar";
-import logo from "../assets/logo.png";
+import logo from "../assets/logo.jpg";
 import { FiUser, FiMenu, FiX } from "react-icons/fi";
 import {  useState } from "react";
 import type { UserRole } from "../components/ui/Input";

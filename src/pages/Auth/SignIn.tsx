@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input, type UserRole } from "../../components/ui/Input";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo.jpg";
 
 interface User {
   nic: string;
