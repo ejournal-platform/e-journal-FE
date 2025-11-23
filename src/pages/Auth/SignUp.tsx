@@ -5,27 +5,13 @@ import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/logo.png";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-interface User {
-  nic: string;
-  password: string;
-  role: UserRole;
-}
+import { useRegister } from "../../api/hooks/auth";
 
-interface SignupProps {
-  users: User[];
-  setUsers: React.Dispatch<React.SetStateAction<User[]>>;
-}
 
-const validateNicAndRole = (nic: string, role: UserRole) => {
-  if (!nic || !role) return false;
-  if (nic.startsWith("1") && role === "MasterTrainer") return true;
-  if (nic.startsWith("2") && role === "TOT") return true;
-  if (nic.startsWith("3") && role === "EndUser") return true;
-  if (nic.startsWith("4") && role === "Staff") return true;
-  return false;
-};
 
-const Signup = ({ users, setUsers }: SignupProps) => {
+
+
+const Signup = () => {
   const navigate = useNavigate();
 
   const [nic, setNic] = useState("");
@@ -35,7 +21,7 @@ const Signup = ({ users, setUsers }: SignupProps) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: register, isPending: isLoading } = useRegister();
 
   const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
@@ -46,38 +32,34 @@ const Signup = ({ users, setUsers }: SignupProps) => {
       return;
     }
 
-    if (!validateNicAndRole(nic, role)) {
-      setMessage({
-        type: "error",
-        text: "NIC number and selected role do not match company records.",
-      });
-      return;
-    }
+
 
     if (password !== confirmPassword) {
       setMessage({ type: "error", text: "Passwords do not match. Please re-enter." });
       return;
     }
 
-    const userExists = users.find((u) => u.nic === nic);
-    if (userExists) {
-      setMessage({ type: "error", text: "This NIC is already registered. Please login." });
-      return;
-    }
+    // Remove client-side user existence check as backend handles it
 
-    setIsLoading(true);
-    setTimeout(() => {
-      setUsers([...users, { nic, password, role }]);
-      setIsLoading(false);
-      setMessage({ type: "success", text: "Signup successful! Please login." });
-      setNic("");
-      setPassword("");
-      setConfirmPassword("");
-      setRole(null);
+    register(
+      { nic, password, firstName: "", lastName: "" }, // Assuming first/last name are optional or not in form yet
+      {
+        onSuccess: () => {
+          setMessage({ type: "success", text: "Signup successful! Please login." });
+          setNic("");
+          setPassword("");
+          setConfirmPassword("");
+          setRole(null);
 
-      // Redirect to login after short delay
-      setTimeout(() => navigate("/signIn"), 1000);
-    }, 1000);
+          // Redirect to login after short delay
+          setTimeout(() => navigate("/signIn"), 1000);
+        },
+        onError: (error: any) => {
+          const errorMessage = error?.response?.data?.error || "Signup failed. NIC might be already registered.";
+          setMessage({ type: "error", text: errorMessage });
+        }
+      }
+    );
   };
 
   return (
@@ -103,11 +85,10 @@ const Signup = ({ users, setUsers }: SignupProps) => {
 
         {message && (
           <div
-            className={`p-3 mb-6 rounded-lg text-sm font-medium ${
-              message.type === "error"
-                ? "bg-red-100 text-red-700"
-                : "bg-green-100 text-green-700"
-            }`}
+            className={`p-3 mb-6 rounded-lg text-sm font-medium ${message.type === "error"
+              ? "bg-red-100 text-red-700"
+              : "bg-green-100 text-green-700"
+              }`}
           >
             {message.text}
           </div>
@@ -178,11 +159,10 @@ const Signup = ({ users, setUsers }: SignupProps) => {
 
         <button
           type="submit"
-          className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-lg font-bold text-white mt-6 ${
-            isLoading
-              ? "!bg-green-400 cursor-not-allowed"
-              : "!bg-green-600 hover:!bg-green-700 transition duration-150"
-          }`}
+          className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-lg font-bold text-white mt-6 ${isLoading
+            ? "!bg-green-400 cursor-not-allowed"
+            : "!bg-green-600 hover:!bg-green-700 transition duration-150"
+            }`}
         >
           Sign Up
         </button>

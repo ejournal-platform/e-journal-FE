@@ -22,19 +22,53 @@ const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
       {/* Text */}
       <p className="text-gray-700 mb-4">{post.text}</p>
 
-      {/* Image */}
-      <div className="relative w-full overflow-hidden rounded-xl shadow-md bg-gray-100 flex-1">
-        <img
-          src={post.imageUrl}
-          alt={`Content by ${post.author}`}
-          className="w-full h-64 object-cover"
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src =
-              "https://placehold.co/600x400/cccccc/333333?text=Content+Not+Available";
-          }}
-        />
-      </div>
+      {/* Image Grid */}
+      {post.imageUrls && post.imageUrls.length > 0 && (
+        <div className={`grid gap-1 mb-4 overflow-hidden rounded-xl shadow-md bg-gray-100 
+          ${post.imageUrls.length === 1 ? 'grid-cols-1' :
+            post.imageUrls.length === 2 ? 'grid-cols-2' :
+              post.imageUrls.length === 3 ? 'grid-cols-2' : 'grid-cols-2'}`}
+          style={{ height: '300px' }}
+        >
+          {post.imageUrls.slice(0, 4).map((url, index) => (
+            <div key={index} className={`relative w-full h-full overflow-hidden ${post.imageUrls!.length === 3 && index === 0 ? 'row-span-2' : ''
+              }`}>
+              <img
+                src={url}
+                alt={`Content by ${post.author}`}
+                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                onError={(e) => {
+                  e.currentTarget.onerror = null;
+                  e.currentTarget.src =
+                    "https://placehold.co/600x400/cccccc/333333?text=Content+Not+Available";
+                }}
+              />
+              {/* Overlay for +N images */}
+              {post.imageUrls!.length > 4 && index === 3 && (
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-bold text-xl">
+                  +{post.imageUrls!.length - 4}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Fallback for single legacy imageUrl if imageUrls is empty but imageUrl exists */}
+      {(!post.imageUrls || post.imageUrls.length === 0) && post.imageUrl && (
+        <div className="relative w-full overflow-hidden rounded-xl shadow-md bg-gray-100 flex-1">
+          <img
+            src={post.imageUrl}
+            alt={`Content by ${post.author}`}
+            className="w-full h-64 object-cover"
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src =
+                "https://placehold.co/600x400/cccccc/333333?text=Content+Not+Available";
+            }}
+          />
+        </div>
+      )}
 
       {/* Actions */}
       <PostActions

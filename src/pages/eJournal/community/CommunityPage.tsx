@@ -1,33 +1,59 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import CommunityPostCard from "../../../components/community/CommunityPostCard";
 import type { CommunityPost } from "../../../components/community/types";
-
-export const mockPosts: CommunityPost[] = [
-  { id: 1, author: 'Dr. Anya Sharma', date: 'July 26, 2024', text: 'Photos from the recent training session on food safety practices.', imageUrl: 'https://placehold.co/600x400/00b894/ffffff?text=Training+Session+Photo', likes: 15, comments: 4, downloadCount: 8 },
-  { id: 2, author: 'Mr. Ben Carter', date: 'July 26, 2024', text: 'Attendance sheet for the training session held on July 28th.', imageUrl: 'https://placehold.co/600x800/ff7675/ffffff?text=Attendance+Sheet+PDF', likes: 8, comments: 2, downloadCount: 12 },
-  { id: 3, author: 'Ms. Chloe Davis', date: 'July 24, 2024', text: 'A short video demonstrating proper handwashing techniques.', imageUrl: 'https://placehold.co/600x350/a29bfe/ffffff?text=Handwashing+Demo+Video', likes: 21, comments: 7, downloadCount: 5 },
-  { id: 4, author: 'Mr. Dinesh Perera', date: 'July 22, 2024', text: 'Updated guide on allergen management now available in resources section.', imageUrl: 'https://placehold.co/600x200/55efc4/ffffff?text=Updated+Guide+Cover', likes: 10, comments: 1, downloadCount: 15 },
-];
+import { usePosts, useCreatePost } from "../../../api/hooks/posts";
 
 const CommunityPage = () => {
-  // 🟢 NEW: manage posts state (to update likes/comments)
-  const [posts, setPosts] = useState<CommunityPost[]>(mockPosts);
-  
-//   const handleLike = (id: number) => {
-//     setPosts(prev =>
-//       prev.map(post => post.id === id ? { ...post, likes: post.likes + 1 } : post)
-//     );
-//   };
+  const { data: postsData, isLoading, error } = usePosts();
+  const { mutate: createPost, isPending: isCreating } = useCreatePost();
+  const [newPostText, setNewPostText] = useState("");
 
-//   const handleAddComment = (id: number, comment: string) => {
-//     setPosts(prev =>
-//       prev.map(post =>
-//         post.id === id
-//           ? { ...post, comments: post.comments + 1, latestComment: comment }
-//           : post
-//       )
-//     );
-//   };
+  const posts: CommunityPost[] = useMemo(() => {
+    if (!postsData) return [];
+    return postsData.map((post) => ({
+      id: post.id, // Assuming ID is string in type or compatible
+      author: post.authorName || "Unknown Author", // Backend might need to send author name or we fetch it
+      date: new Date(post.createdAt).toLocaleDateString(),
+      text: post.caption,
+      imageUrl: post.mediaUrls && post.mediaUrls.length > 0
+        ? post.mediaUrls[0]
+        : undefined,
+      imageUrls: post.mediaUrls || [],
+      likes: post.likesCount,
+      isLiked: post.isLiked,
+      comments: post.comments ? post.comments.map(c => ({
+        id: c.id,
+        user: `${c.author.firstName} ${c.author.lastName}`,
+        text: c.content
+      })) : [],
+      downloadCount: post.downloadCount
+    }));
+  }, [postsData]);
+
+  const handleCreatePost = () => {
+    if (!newPostText.trim()) return;
+    createPost({ caption: newPostText }, {
+      onSuccess: () => {
+        setNewPostText("");
+      }
+    });
+  };
+
+  //   const handleLike = (id: number) => {
+  //     setPosts(prev =>
+  //       prev.map(post => post.id === id ? { ...post, likes: post.likes + 1 } : post)
+  //     );
+  //   };
+
+  //   const handleAddComment = (id: number, comment: string) => {
+  //     setPosts(prev =>
+  //       prev.map(post =>
+  //         post.id === id
+  //           ? { ...post, comments: post.comments + 1, latestComment: comment }
+  //           : post
+  //       )
+  //     );
+  //   };
 
   return (
     <div className="p-4 sm:p-8 w-full max-w-xl mx-auto">
@@ -42,9 +68,15 @@ const CommunityPage = () => {
           <input
             type="text"
             placeholder="What's on your mind?"
+            value={newPostText}
+            onChange={(e) => setNewPostText(e.target.value)}
             className="flex-1 px-4 py-2 bg-gray-100 border-none rounded-full focus:ring-2 focus:ring-green-500 transition"
           />
-          <button className="bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition">
+          <button
+            onClick={handleCreatePost}
+            disabled={isCreating}
+            className="bg-green-600 text-white p-2 rounded-full hover:bg-green-700 transition disabled:opacity-50"
+          >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
           </button>
         </div>
@@ -52,12 +84,14 @@ const CommunityPage = () => {
 
       {/* Feed */}
       <div className="space-y-6">
+        {isLoading && <p className="text-center text-gray-500">Loading posts...</p>}
+        {error && <p className="text-center text-red-500">Failed to load posts.</p>}
         {posts.map(post => (
           <CommunityPostCard
             key={post.id}
             post={post}
-            // onLike={handleLike}      
-            // onAddComment={handleAddComment} 
+          // onLike={handleLike}      
+          // onAddComment={handleAddComment} 
           />
         ))}
       </div>
