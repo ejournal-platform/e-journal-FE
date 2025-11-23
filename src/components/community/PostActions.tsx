@@ -87,27 +87,41 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
 
   return (
     <div className="mt-4 border-t border-gray-100 pt-3">
-      <div className="flex flex-col sm:flex-row justify-between mt-4 border-t border-gray-100 pt-3 space-y-2 sm:space-y-0 sm:space-x-4">
+      <div className="flex flex-row justify-between mt-4 border-t border-gray-100 pt-3 space-y-2 sm:space-y-0 sm:space-x-4 text-center">
         {/* Like */}
-        <button
+        <div>
+           <button
           className={`${btnClass} ${hasLiked ? "text-green-600" : ""}`}
           onClick={handleLike}
         >
-          {hasLiked ? <FaHeart className="text-green-600" /> : <FaRegHeart />}
-          <span>Like ({likes})</span>
+          {hasLiked ? <FaHeart className="text-green-600 w-5 h-5" /> : <FaRegHeart className="w-5 h-5"/>}
+          <span className="hidden sm:inline">Like ({likes})</span>
+          <span className="inline sm:hidden">({likes})</span>
         </button>
-
+        </div>
+       
         {/* Comment Button */}
-        <button className={btnClass} onClick={onToggleComments}>
-          <FaComment />
-          <span>Comment ({comments.length})</span>
+        <div>
+           <button className={btnClass} onClick={onToggleComments}>
+          <FaComment className="w-5 h-5"/>
+          <span className="hidden sm:inline">Comment ({comments.length})</span>
+          <span className="inline sm:hidden">({comments.length})</span>
+
         </button>
+        </div>
+       
 
         {/* Download Button */}
-        <button onClick={handleDownload} className={btnClass}>
-          <FaDownload className={downloading ? "animate-bounce" : ""} />
-          <span>{downloading ? "Downloading..." : `Download (${post.downloadCount})`}</span>
+        <div>
+           <button onClick={handleDownload} className={btnClass}>
+          <FaDownload className={`w-5 h-5downloading ? "animate-bounce" : ""}`} />
+          <span className="hidden sm:inline">{downloading ? "Downloading..." : `Download (${post.downloadCount})`}</span>
+          <span className="inline sm:hidden">
+             {downloading ? "..." : `(${post.downloadCount})`}
+          </span>
         </button>
+        </div>
+       
       </div>
 
 
