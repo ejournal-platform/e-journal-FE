@@ -7,7 +7,6 @@ interface Props {
     title: string;
     description: string;
     iconSvg: ReactNode;
-    bgColor: string;
   };
 }
 
@@ -42,7 +41,7 @@ const AnnouncementCard = ({ announcement }: Props) => {
       <div
         className={`
           w-20 h-20 sm:w-28 sm:h-28 md:w-36 md:h-36 
-          flex-shrink-0 rounded-lg ${announcement.bgColor} 
+          shrink-0 rounded-lg
           flex items-center justify-center p-3 sm:p-4 shadow-md
         `}
       >

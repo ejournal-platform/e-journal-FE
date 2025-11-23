@@ -12,7 +12,7 @@ const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
                  ? post.imageUrls 
                  : (post.imageUrl ? [post.imageUrl] : []);
   const videos = post.videoUrls || []; 
-  const pdfs = post.pdfUrls || [];     
+  const pdfs = post.pdfUrls || [];
 
   // Fallback URL to display when an image fails to load
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>, fallbackText: string) => {

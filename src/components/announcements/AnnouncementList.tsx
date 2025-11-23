@@ -8,7 +8,6 @@ interface Props {
         title: string;
         description: string;
         iconSvg: ReactNode;
-        bgColor: string;
     }[];
 }
 
