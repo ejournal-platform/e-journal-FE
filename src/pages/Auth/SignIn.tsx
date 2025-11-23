@@ -148,7 +148,7 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
           </div>
         </main>
 
-        <footer className="py-4 text-center text-xs text-gray-500 w-full">
+        <footer className="py-4 text-center font-bold text-xs text-gray-800 w-full">
           Powered by The Uni Digital
         </footer>
       </div>
