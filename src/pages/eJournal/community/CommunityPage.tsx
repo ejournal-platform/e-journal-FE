@@ -12,7 +12,7 @@ const CommunityPage = () => {
     if (!postsData) return [];
     return postsData.map((post) => ({
       id: post.id, // Assuming ID is string in type or compatible
-      author: post.authorName || "Unknown Author", // Backend might need to send author name or we fetch it
+      author: `${post.author.firstName} ${post.author.lastName}`.trim() || "Unknown Author",
       date: new Date(post.createdAt).toLocaleDateString(),
       text: post.caption,
       imageUrl: post.mediaUrls && post.mediaUrls.length > 0

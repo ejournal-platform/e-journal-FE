@@ -22,7 +22,7 @@ export interface PostWithDetailsResponse extends PostResponse {
     // I need to check post_details.go to be sure, but for now I'll assume it extends PostResponse
     // or has similar fields.
     // Let's assume it's similar for now.
-    authorName: string; // inferred
+    author: AuthorResponse; // 🟢 From backend
     mediaUrls: string[]; // 🟢 From backend
     isLiked: boolean;
     comments: CommentWithAuthorResponse[];
