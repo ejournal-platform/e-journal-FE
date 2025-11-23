@@ -28,7 +28,7 @@ export const mockPosts: CommunityPost[] = [
   { 
     id: 2, 
     author: 'Nuwan Siriwardhana', 
-    date: 'November 26, 2024', 
+    date: 'November 20, 2024', 
     text: '⛔  ඊයේ මං මාවනැල්ලේ , කඩේකින් යෝගට් එකක් ගත්තා. ඒක හොඳටම නරක් වෙලා, මේක කඩේ සේවකයන්ට දැනුම් දුන්නා. වැඩක් නෑ. එයාලට ඒකට උත්තර නෑ. එයාලට බයකුත් නෑ. මං ඉක්මනින් කෑගල්ල දිස්ත්‍රික් සෞඛ්‍ය වෛද්‍ය නිලධාරී කාර්‍යාලයේ රාජපක්ෂ මහත අමතා , සියල්ල පැහැදිලි කරා, එතුමා මාවනැල්ල සෞඛ්‍ය වෛද්‍ය නිලධාරී කාර්‍යාලයට ගොස් දැනුම්දෙන්න කිව්වා. ඒ යන අතරේ රාජපක්ෂ මහතා එහි නිලධාරීන්ව දැනුවත් කර අවසන්. \n\nඑහි සිටි නිධාරීන්ගේ කාර්‍යක්ෂමතාවය මත , ඒ සඳහා ගත හැකි පියවර ගැනීමට කඩිනම් විය.  එම නිලනිලධාරීන් එම කඩේට ගිහින් එම යෝගට් නිෂ්පාදන ගෙන පරික්ෂාවට ගෙන ඇත. එහි පරීක්ෂණ කටයුතු දිගටම සිදු වන බවට මට දැනුම් දෙන්නට විය.\n\nමා ඒ අවස්ථාවේම ක්‍රියාත්මක වීමෙන් එම නිෂ්පාදන අනෙකුත් පාරිභෝගිකයන් අතට පත්වීම වළක්වා ගැනීමට හැකිවීම පිළිබඳ ඔවුන් මහට ස්තූති කරන්නට විය.\n\nමෙසේ මා හට ක්‍රියකවීමට , අවශ්‍ය පරිසරය නිර්මාණය කරදුන් BESPA ව්‍යාපෘතියේ සියලු නිලධාරීන්ට, ස්තූතියි.\n\n- නුවන් සිරිවර්ධන -', 
     imageUrls: [
       Img6,
@@ -41,7 +41,7 @@ export const mockPosts: CommunityPost[] = [
     { 
     id: 3, 
     author: 'Kugatharshan Elangeshwaran', 
-    date: 'November 26, 2024', 
+    date: 'November 18, 2024', 
     text: 'Today, I had a meeting with the Customer Affairs Officers.\n•	They expressed their willingness to support our work.\n•	They agreed to assist as resource persons for the awareness programs.\n•	They suggested that we communicate our process with the GA.\n•	They also recommended collaborating with schools, as they can help implement this program through school networks.', 
     imageUrls: [
       Img8
