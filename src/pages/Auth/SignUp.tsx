@@ -149,7 +149,7 @@ const Signup = ({ users, setUsers }: SignupProps) => {
               onClick={() => setShowPassword(!showPassword)}
               className="absolute top-8 right-3 text-gray-500 hover:text-gray-700"
             >
-              {showPassword ? <FaEye size={20} /> : <FaEyeSlash size={20} />}
+              {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
             </button>
           </div>
 
