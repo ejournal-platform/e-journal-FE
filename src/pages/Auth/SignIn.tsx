@@ -126,8 +126,8 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
               <button
                 type="submit"
                 className={`w-full flex justify-center py-3 px-4 rounded-lg shadow-sm text-md font-bold text-white mt-6 ${isLoading
-                    ? "!bg-green-400 cursor-not-allowed"
-                    : "!bg-green-600 hover:!bg-green-700 transition duration-150"
+                    ? "bg-green-400 cursor-not-allowed"
+                    : "bg-green-600 hover:bg-green-700 transition duration-150"
                   }`}
               >
                 Login

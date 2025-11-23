@@ -60,7 +60,7 @@ const handleProfileClick = () => {
       </header>
 
       {/* ✅ Main Content */}
-      <main className="flex-grow p-4 sm:p-6 md:p-8 lg:p-10">
+      <main className="grow p-4 sm:p-6 md:p-8 lg:p-10">
         <div className="mb-8 text-center sm:text-left">
           <h1 className="text-xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-1">
             Welcome, {user.name}!
