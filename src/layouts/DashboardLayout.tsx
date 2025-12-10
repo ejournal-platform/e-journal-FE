@@ -5,6 +5,7 @@ import { FiUser, FiMenu, FiX } from "react-icons/fi";
 import { useState } from "react";
 import type { UserRole } from "../components/ui/Input";
 import bgImage from '../assets/background/bg2.jpeg'
+
 interface DashboardLayoutProps {
   nic?: string;
   role: UserRole;

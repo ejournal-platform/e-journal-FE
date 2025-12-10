@@ -6,7 +6,9 @@ export type UserRole = 'MasterTrainer' | 'TOT' | 'EndUser' | 'Staff' | null;
 // 2. Define the shape of the Context's value
 interface AuthContextType {
   userRole: UserRole;
-  login: (role: UserRole) => void;
+  token: string | null;
+  nic: string | null;
+  login: (role: UserRole, token: string, nic: string) => void;
   logout: () => void;
 }
 
@@ -24,19 +26,39 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     (localStorage.getItem('userRole') as UserRole) || null
   );
 
-  const login = (role: UserRole) => {
+  const [token, setToken] = useState<string | null>(
+    localStorage.getItem('token') || null
+  );
+
+  const [nic, setNic] = useState<string | null>(
+    localStorage.getItem('nic') || null
+  );
+
+  const login = (role: UserRole, token: string, nic: string) => {
     setUserRole(role);
+    setToken(token);
+    setNic(nic);
     if (role) {
       localStorage.setItem('userRole', role);
+    }
+    if (token) {
+      localStorage.setItem('token', token);
+    }
+    if (nic) {
+      localStorage.setItem('nic', nic);
     }
   };
 
   const logout = () => {
     setUserRole(null);
+    setToken(null);
+    setNic(null);
     localStorage.removeItem('userRole');
+    localStorage.removeItem('token');
+    localStorage.removeItem('nic');
   };
 
-  const value = { userRole, login, logout };
+  const value = { userRole, token, nic, login, logout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

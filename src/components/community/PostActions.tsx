@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { type CommunityPost } from "./types";
 import { FaHeart, FaRegHeart, FaComment, FaDownload, FaTrash } from "react-icons/fa";
+import { useLikePost, useAddComment, useDownloadPost } from "../../api/hooks/posts";
 
 interface Props {
   post: CommunityPost;
@@ -11,53 +12,38 @@ interface Props {
 const CURRENT_USER = "You"; // Mock current user (you can later replace with real profile)
 
 const PostActions = ({ post, showComments, onToggleComments }: Props) => {
-  const [likes, setLikes] = useState(post.likes);
-  const [hasLiked, setHasLiked] = useState(false);
-  const [comments, setComments] = useState<{ id: number; user: string; text: string }[]>([]);
+  const { mutate: likePost } = useLikePost();
+  const { mutate: addComment } = useAddComment();
+  const { mutate: downloadPost } = useDownloadPost();
+
   const [newComment, setNewComment] = useState("");
   const [downloading, setDownloading] = useState(false);
 
-  // Load like status from localStorage
-  useEffect(() => {
-    const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
-    setHasLiked(likedPosts.includes(post.id));
-  }, [post.id]);
+  // Use props for state, assuming parent updates on mutation success (via query invalidation)
+  const likes = post.likes;
+  const hasLiked = post.isLiked;
+  const comments = post.comments || [];
 
   // Toggle Like (add/remove)
   const handleLike = () => {
-    const likedPosts = JSON.parse(localStorage.getItem("likedPosts") || "[]");
-    let updated = [...likedPosts];
-
-    if (hasLiked) {
-      // Unlike: remove post from likedPosts
-      updated = likedPosts.filter((id: number) => id !== post.id);
-      localStorage.setItem("likedPosts", JSON.stringify(updated));
-      setLikes((prev) => prev - 1);
-      setHasLiked(false);
-    } else {
-      // Like: add post to likedPosts
-      updated.push(post.id);
-      localStorage.setItem("likedPosts", JSON.stringify(updated));
-      setLikes((prev) => prev + 1);
-      setHasLiked(true);
-    }
+    likePost(post.id.toString());
   };
 
   // Add new comment
   const handleComment = () => {
     if (newComment.trim() === "") return;
-    const newEntry = {
-      id: Date.now(),
-      user: CURRENT_USER,
-      text: newComment,
-    };
-    setComments([...comments, newEntry]);
-    setNewComment("");
+    addComment({ id: post.id.toString(), data: { content: newComment } }, {
+      onSuccess: () => {
+        setNewComment("");
+      }
+    });
   };
 
-  const handleDeleteComment = (id: number, user: string) => {
+  // Delete own comment only (Not implemented in backend yet)
+  const handleDeleteComment = (_id: string, user: string) => {
     if (user !== CURRENT_USER) return; // not allowed
-    setComments((prev) => prev.filter((c) => c.id !== id));
+    // setComments((prev) => prev.filter((c) => c.id !== id));
+    alert("Delete comment not implemented yet");
   };
 
   // Download mock file
@@ -67,7 +53,17 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
     if (!post.imageUrl) return;
     
     setDownloading(true);
+
+    // Increment download count
+    downloadPost(post.id.toString());
+
+    if (!post.imageUrl) {
+      alert("No image to download.");
+      setDownloading(false);
+      return;
+    }
     try {
+      // If multiple images, maybe download all? For now just the first one or the one in imageUrl
       const response = await fetch(post.imageUrl);
       const blob = await response.blob();
       const blobUrl = URL.createObjectURL(blob);
@@ -76,6 +72,8 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
       link.download = `Post-${post.id}.jpg`;
       link.click();
       URL.revokeObjectURL(blobUrl);
+    } catch (e) {
+      console.error("Download failed", e);
     } finally {
       setDownloading(false);
     }

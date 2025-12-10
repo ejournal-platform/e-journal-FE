@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,29 +15,12 @@ import MySubmissionsPage from "./pages/eJournal/submission/MySubmissionsPage";
 import AnnouncementsPage from "./pages/eJournal/announcement/AnnouncementsPage";
 import CommunityPage from "./pages/eJournal/community/CommunityPage";
 
-import { type UserRole } from "./components/ui/Input";
 import "./App.css";
+import { useAuth } from "./context/AuthContext";
 
 const App = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [userRole, setUserRole] = useState<UserRole | null>(null);
-  const [userNic, setUserNic] = useState<string>("");
-
- const [users, setUsers] = useState<
-    { nic: string; password: string; role: UserRole }[]
-  >([]);
-
-  const handleLogin = (nic: string, role: UserRole) => {
-    setUserNic(nic);
-    setUserRole(role);
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setUserRole(null);
-    setUserNic("");
-  };
+  const { userRole, token, nic, logout } = useAuth();
+  const isLoggedIn = !!token;
 
   return (
     <Router>
@@ -50,28 +32,28 @@ const App = () => {
             isLoggedIn ? (
               <Navigate to="/dashboard" replace />
             ) : (
-              <SignIn onLogin={handleLogin} users={users} />
+              <SignIn />
             )
           }
         />
 
         {/* --- Public signUp Page --- */}
-         <Route
+        <Route
           path="/signup"
           element={
             isLoggedIn ? (
               <Navigate to="/dashboard" replace />
             ) : (
-              <SignUp users={users} setUsers={setUsers}/>
+              <SignUp />
             )
           }
         />
 
         {/* --- Sidebar Layout Pages (E-Journal Section) --- */}
-       {isLoggedIn && userRole && (
+        {isLoggedIn && userRole && (
           <Route
             path="/dashboard"
-            element={<DashboardLayout role={userRole} nic={userNic} onLogout={handleLogout} />}
+            element={<DashboardLayout role={userRole} nic={nic || ""} onLogout={logout} />}
           >
             <Route index element={<Navigate to="community" replace />} />
             <Route path="upload" element={<UploadActivityPage />} />

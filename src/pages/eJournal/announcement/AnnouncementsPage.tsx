@@ -1,9 +1,5 @@
 import { type ReactNode } from "react";
 import AnnouncementList from "../../../components/announcements/AnnouncementList";
-import Ann1 from '../../../assets/dummy/announcement/ann1.jpg';
-import Ann2 from '../../../assets/dummy/announcement/ann2.jpg';
-import Ann3 from '../../../assets/dummy/announcement/ann3.jpg';
-import Ann4 from '../../../assets/dummy/announcement/ann4.jpg';
 
 interface Announcement {
   id: number;
@@ -22,7 +18,7 @@ const mockAnnouncements: Announcement[] = [
       "The Ministry of Health has issued updated guidelines on food safety, effective immediately. All trainers are required to review and incorporate these changes into their training materials.",
     iconSvg: (
       <img
-        src={Ann1}            
+        src={''}            
         alt="Custom Imported Icon"
         className="h-full w-full object-contain"
       />
@@ -36,7 +32,7 @@ const mockAnnouncements: Announcement[] = [
       "",
     iconSvg: (
       <img
-        src={Ann2}            
+        src={''}            
         alt="Custom Imported Icon"
         className="h-full w-full object-contain"
       />
@@ -50,7 +46,7 @@ const mockAnnouncements: Announcement[] = [
       "",
     iconSvg: (
      <img
-        src={Ann3}            
+        src={''}            
         alt="Custom Imported Icon"
         className="h-full w-full object-contain"
       />
@@ -64,7 +60,7 @@ const mockAnnouncements: Announcement[] = [
       "Join us for a food safety awareness campaign on August 5th at the Community Center.",
     iconSvg: (
       <img
-        src={Ann4}            
+        src={''}            
         alt="Custom Imported Icon"
         className="h-full w-full object-contain"
       />

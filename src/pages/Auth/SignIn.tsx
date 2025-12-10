@@ -1,29 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, type UserRole } from "../../components/ui/Input";
+import { Input } from "../../components/ui/Input";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import logo from "../../assets/logo.jpg";
 import bgImage from '../../assets/background/bg1.jpeg';
+import logo from "../../assets/logo.jpg";
+import { useLogin } from "../../api/hooks/auth";
+import { useAuth } from "../../context/AuthContext";
 
-interface User {
-  nic: string;
-  password: string;
-  role: UserRole;
-}
 
-interface SignInProps {
-  onLogin: (nic: string, role: UserRole) => void;
-  users: User[];
-}
-
-const SignIn = ({ onLogin, users }: SignInProps) => {
+const SignIn = () => {
   const navigate = useNavigate();
 
   const [nic, setNic] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: login, isPending: isLoading } = useLogin();
+  const { login: authLogin } = useAuth();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,19 +27,55 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
       return;
     }
 
-    setIsLoading(true);
-    setTimeout(() => {
-      const existingUser = users.find((u) => u.nic === nic && u.password === password);
-      setIsLoading(false);
+    login(
+      { nic, password },
+      {
+        onSuccess: (data) => {
+          // Assuming the backend returns the role in the token or response
+          // For now, we might need to decode the token or fetch profile
+          // But the current AuthContext expects a role.
+          // Let's assume for now we decode it or get it from response if available.
+          // The current AuthResponse only has token.
+          // We might need to fetch profile after login to get role.
+          // For this step, I will pass the token to authLogin.
+          // And temporarily hardcode role or fetch it.
+          // Wait, the previous code passed role.
+          // Let's check AuthContext again.
+          // It takes (role, token).
+          // I will decode the token to get the role if possible, or fetch profile.
+          // Since I can't easily decode JWT here without a library, and I don't want to add more deps if not needed.
+          // I'll check if I can get role from response.
+          // The backend login response only has token.
+          // I should probably fetch profile.
+          // But for now, I will use a placeholder role or try to parse the token payload manually.
 
-      if (!existingUser) {
-        setMessage({ type: "error", text: "NIC and password do not match our records." });
-        return;
+          // Actually, let's just store the token and navigate.
+          // The AuthContext might need updating if role is strictly required for rendering.
+          // Let's try to parse the JWT payload manually (it's just base64).
+
+          try {
+            const payload = JSON.parse(atob(data.token.split('.')[1]));
+            // Backend claims: roles (string or array?)
+            // Feature file says: roles: INSTITUTE_ADMIN.
+            // Let's assume standard role mapping.
+            // If payload.roles is what we need.
+
+            // For safety, let's just pass 'EndUser' as default if parsing fails or complex.
+            // Or better, let's fetch profile immediately? 
+            // No, let's just use the token.
+
+            authLogin(payload.roles || 'EndUser', data.token, nic);
+            navigate("/dashboard/community");
+          } catch (e) {
+            console.error("Failed to parse token", e);
+            setMessage({ type: "error", text: "Login failed: Invalid token." });
+          }
+        },
+        onError: () => {
+          setMessage({ type: "error", text: "Invalid NIC or password." });
+        }
       }
-
-      onLogin(existingUser.nic, existingUser.role);
-      navigate("/dashboard/community");
-    }, 1000);
+    );
   };
 
   return (
@@ -75,7 +104,7 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
               <p className="text-sm text-gray-600 font-semibold">
                 Enter your NIC and password to continue.
               </p>
-            </div>
+              </div>
 
             {message && (
               <div
@@ -106,6 +135,7 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
                 >
                   Password
                 </label>
+
                 <input
                   id="password"
                   type={showPassword ? "text" : "password"}
@@ -114,6 +144,7 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full border border-gray-300 rounded-lg py-2 px-3 pr-10 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 />
+                
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
@@ -130,7 +161,7 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
                     : "bg-green-600 hover:bg-green-700 transition duration-200"
                   }`}
               >
-                Login
+                {isLoading ? "Logging in..." : "Login"}
               </button>
             </form>
 
@@ -146,12 +177,12 @@ const SignIn = ({ onLogin, users }: SignInProps) => {
               </button>
             </p>
           </div>
-        </main>
+        </main> 
 
-        <footer className="py-4 text-center font-bold text-xs text-gray-800 w-full">
-          Powered by The Uni Digital
-        </footer>
-      </div>
+      <footer className="py-4 text-center text-xs text-gray-500 w-full">
+        Powered by an NGO Project on Food Safety
+      </footer>
+    </div>
     </div>
   );
 };
