@@ -198,16 +198,8 @@ const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
         </div>
       </div>
 
-      {/* Dula -Description */}
-      {/* <p className="text-gray-700 mb-4 whitespace-pre-wrap">{post.text}</p> */}
-      
-        {/* Dula - Media */}
-          {/* {renderMediaContent()} */}
-      
-      
-
       {/* Text */}
-      <p className="text-gray-700 mb-4">{post.text}</p>
+      <p className="text-gray-700 mb-4">{post.text.split('\n')[2]}</p>
 
       {/* Image Grid */}
       {post.imageUrls && post.imageUrls.length > 0 && (

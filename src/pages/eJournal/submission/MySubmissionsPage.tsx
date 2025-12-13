@@ -9,7 +9,10 @@ const MySubmissionsPage = () => {
     if (!postsData) return [];
     return postsData.map((post) => ({
       id: post.id,
-      title: post.caption.split('\n')[0] || "Untitled",
+      description: post.caption.split('\n')[2].length > 0
+        ? post.caption.split('\n')[2].length > 20
+          ? post.caption.split('\n')[2].slice(0, 20) + "..." : post.caption.split('\n')[2]
+        : "Untitled",
       date: new Date(post.createdAt).toLocaleDateString(),
       status: post.status,
       images: post.mediaUrls.length,
@@ -37,23 +40,7 @@ const MySubmissionsPage = () => {
   };
 
   return (
-    // <div
-    //   className="
-    //     w-full max-w-5xl mx-auto 
-    //     px-4 sm:px-6 md:px-8 py-6 sm:py-8
-    //   "
-    // >
-    //   {/* Submission List */}
-    //   <div
-    //     className="w-full overflow-x-auto rounded-lg p-3 sm:p-5"
-    //   >
-    //     <SubmissionList />
-    //   </div>
-
     <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 md:px-8 py-6 sm:py-8">
-      <h1 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-gray-900 mb-6 sm:mb-8 text-center sm:text-left">
-        My Submissions
-      </h1>
 
       {isLoading && <p className="text-center text-gray-500">Loading submissions...</p>}
       {error && <p className="text-center text-red-500">Failed to load submissions.</p>}
@@ -64,7 +51,7 @@ const MySubmissionsPage = () => {
             <table className="w-full text-left">
               <thead>
                 <tr className="border-b border-gray-200">
-                  <th className="pb-3 text-sm font-semibold text-gray-700">Title</th>
+                  <th className="pb-3 text-sm font-semibold text-gray-700">Description</th>
                   <th className="pb-3 text-sm font-semibold text-gray-700">Date</th>
                   <th className="pb-3 text-sm font-semibold text-gray-700">Status</th>
                   <th className="pb-3 text-sm font-semibold text-gray-700">Images</th>
@@ -74,7 +61,7 @@ const MySubmissionsPage = () => {
               <tbody>
                 {submissions.map((submission) => (
                   <tr key={submission.id} className="border-b border-gray-100 hover:bg-gray-50">
-                    <td className="py-3 text-sm text-gray-800">{submission.title}</td>
+                    <td className="py-3 text-sm text-gray-800">{submission.description}</td>
                     <td className="py-3 text-sm text-gray-600">{submission.date}</td>
                     <td className="py-3">{getStatusBadge(submission.status)}</td>
                     <td className="py-3 text-sm text-gray-600">{submission.images}</td>

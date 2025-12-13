@@ -64,10 +64,10 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-gray-200 flex flex-col font-sans overflow-x-hidden">
+    <div className="min-h-screen w-full flex flex-col font-sans overflow-x-hidden">
       {/* Main Content */}
       <main className="grow flex items-center justify-center p-6">
-        <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8 border border-gray-100">
+        <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8 border border-gray-300">
           <div className="flex flex-col items-center mb-8">
             <div className="relative">
               {/* Profile Image or Default Icon */}

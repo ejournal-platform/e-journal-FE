@@ -25,7 +25,7 @@ const App = () => {
   return (
     <Router>
       <Routes>
-        {/* --- Public signIn Page --- */}
+        {/* Public signIn Page */}
         <Route
           path="/signIn"
           element={

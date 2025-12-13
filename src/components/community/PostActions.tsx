@@ -44,6 +44,7 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
     if (user !== CURRENT_USER) return; // not allowed
     // setComments((prev) => prev.filter((c) => c.id !== id));
     alert("Delete comment not implemented yet");
+    // deleteComment(id.toString());
   };
 
   // Download mock file
@@ -111,7 +112,7 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
         {/* Download Button */}
         <div>
            <button onClick={handleDownload} className={btnClass}>
-          <FaDownload className={`w-5 h-5downloading ? "animate-bounce" : ""}`} />
+          <FaDownload className={`w-5 h-5 ${downloading ? "animate-bounce" : ""}`} />
           <span className="hidden sm:inline">{downloading ? "Downloading..." : `Download (${post.downloadCount})`}</span>
           <span className="inline sm:hidden">
              {downloading ? "..." : `(${post.downloadCount})`}
@@ -144,8 +145,9 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
                     <button
                       onClick={() => handleDeleteComment(c.id, c.user)}
                       className="text-xs text-gray-500 hover:text-red-500 group-hover:inline"
+                      title="Delete your comment"
                     >
-                      <FaTrash />
+                      <FaTrash className="w-5 h-5"/>
                     </button>
                   )}
                 </div>
