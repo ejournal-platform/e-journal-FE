@@ -52,20 +52,6 @@ const mockAnnouncements: Announcement[] = [
       />
     ),
   },
-  {
-    id: 4,
-    date: "July 10, 2025",
-    title: "Food Safety Awareness Campaign",
-    description:
-      "Join us for a food safety awareness campaign on August 5th at the Community Center.",
-    iconSvg: (
-      <img
-        src={''}
-        alt="Custom Imported Icon"
-        className="h-full w-full object-contain"
-      />
-    ),
-  },
 ];
 
 const AnnouncementsPage = () => {
