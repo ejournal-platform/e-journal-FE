@@ -49,20 +49,24 @@ const App = () => {
           }
         />
 
-        {/* --- Sidebar Layout Pages (E-Journal Section) --- */}
-        {isLoggedIn && userRole && (
-          <Route
-            path="/dashboard"
-            element={<DashboardLayout role={userRole} nic={nic || ""} onLogout={logout} />}
-          >
-            <Route index element={<Navigate to="community" replace />} />
-            <Route path="upload" element={<UploadActivityPage />} />
-            <Route path="announcements" element={<AnnouncementsPage />} />
-            <Route path="submissions" element={<MySubmissionsPage />} />
-            <Route path="community" element={<CommunityPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-          </Route>
-        )}
+        {/* --- Protected Dashboard Routes --- */}
+        <Route
+          path="/dashboard/*"
+          element={
+            isLoggedIn && userRole ? (
+              <DashboardLayout role={userRole} nic={nic || ""} onLogout={logout} />
+            ) : (
+              <Navigate to="/signIn" replace />
+            )
+          }
+        >
+          <Route index element={<Navigate to="community" replace />} />
+          <Route path="upload" element={<UploadActivityPage />} />
+          <Route path="announcements" element={<AnnouncementsPage />} />
+          <Route path="submissions" element={<MySubmissionsPage />} />
+          <Route path="community" element={<CommunityPage />} />
+          <Route path="profile" element={<ProfilePage />} />
+        </Route>
 
         {/* --- Default Redirect --- */}
         <Route path="/" element={<Navigate to="/signIn" replace />} />
