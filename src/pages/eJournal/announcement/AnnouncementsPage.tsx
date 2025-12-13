@@ -18,54 +18,12 @@ const mockAnnouncements: Announcement[] = [
       "The Ministry of Health has issued updated guidelines on food safety, effective immediately. All trainers are required to review and incorporate these changes into their training materials.",
     iconSvg: (
       <img
-        src={''}            
+        src={''}
         alt="Custom Imported Icon"
         className="h-full w-full object-contain"
       />
     )
-  },
-  {
-    id: 2,
-    date: "July 20, 2025",
-    title: "5 ways to prepare food cleanly",
-    description:
-      "",
-    iconSvg: (
-      <img
-        src={''}            
-        alt="Custom Imported Icon"
-        className="h-full w-full object-contain"
-      />
-    ),
-  },
-  {
-    id: 3,
-    date: "July 15, 2025",
-    title: "Flow of roles",
-    description:
-      "",
-    iconSvg: (
-     <img
-        src={''}            
-        alt="Custom Imported Icon"
-        className="h-full w-full object-contain"
-      />
-    ),
-  },
-  {
-    id: 4,
-    date: "July 10, 2025",
-    title: "Food Safety Awareness Campaign",
-    description:
-      "Join us for a food safety awareness campaign on August 5th at the Community Center.",
-    iconSvg: (
-      <img
-        src={''}            
-        alt="Custom Imported Icon"
-        className="h-full w-full object-contain"
-      />
-    ),
-  },
+  }
 ];
 
 const AnnouncementsPage = () => {
