@@ -27,6 +27,7 @@ const CommunityPage = () => {
       comments: post.comments ? post.comments.map(c => ({
         id: c.id,
         user: `${c.author.firstName} ${c.author.lastName}`,
+        authorId: c.author.id,
         text: c.content
       })) : [],
       downloadCount: post.downloadCount

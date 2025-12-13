@@ -24,6 +24,20 @@ const mockAnnouncements: Announcement[] = [
       />
     )
   },
+  {
+    id: 2,
+    date: "July 20, 2025",
+    title: "5 ways to prepare food cleanly",
+    description:
+      "",
+    iconSvg: (
+      <img
+        src={''}
+        alt="Custom Imported Icon"
+        className="h-full w-full object-contain"
+      />
+    ),
+  },
 ];
 
 const AnnouncementsPage = () => {

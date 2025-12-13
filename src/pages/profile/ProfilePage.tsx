@@ -29,6 +29,9 @@ export const ProfilePage = () => {
     if (profileData) {
       setFirstName(profileData.firstName || "");
       setLastName(profileData.lastName || "");
+      setPhone(profileData.phone || "");
+      setWhatsapp(profileData.whatsapp || "");
+      setDistrict(profileData.district || "");
 
       if (profileData.profileMediaId) {
         setProfileImage(`${import.meta.env.VITE_API_BASE_URL}/media/${profileData.profileMediaId}`);
@@ -52,6 +55,9 @@ export const ProfilePage = () => {
     updateProfile({
       firstName,
       lastName,
+      phone,
+      whatsapp,
+      district,
       // profileMediaId can be added later when image upload is implemented
     }, {
       onSuccess: () => {
@@ -233,7 +239,7 @@ export const ProfilePage = () => {
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Change Password
                 </label>
-                <div className="flex items-center bg-gray-100 rounded-lg px-4 py-3">
+                <div className="flex items-center justify-between bg-gray-100 rounded-lg px-4 py-3">
                   <FaLock className="text-gray-500 mr-2" />
                   <input
                     id="password"
