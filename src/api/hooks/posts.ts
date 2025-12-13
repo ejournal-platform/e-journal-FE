@@ -140,3 +140,16 @@ export const useDeletePost = () => {
         },
     });
 };
+
+export const useDeleteComment = () => {
+    const queryClient = useQueryClient();
+    return useMutation({
+        mutationFn: async (id: string) => {
+            const response = await client.delete(`/posts/comments/${id}`);
+            return response.data;
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['posts'] }); // Invalidate posts to refresh comments
+        },
+    });
+};

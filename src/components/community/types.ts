@@ -17,5 +17,6 @@ export interface CommunityPost {
 export interface CommunityComment {
   id: string;
   user: string;
+  authorId: string; // 🟢 Author ID for permission checks
   text: string;
 }

@@ -29,6 +29,9 @@ export const ProfilePage = () => {
     if (profileData) {
       setFirstName(profileData.firstName || "");
       setLastName(profileData.lastName || "");
+      setPhone(profileData.phone || "");
+      setWhatsapp(profileData.whatsapp || "");
+      setDistrict(profileData.district || "");
 
       if (profileData.profileMediaId) {
         setProfileImage(`${import.meta.env.VITE_API_BASE_URL}/media/${profileData.profileMediaId}`);
@@ -52,6 +55,9 @@ export const ProfilePage = () => {
     updateProfile({
       firstName,
       lastName,
+      phone,
+      whatsapp,
+      district,
       // profileMediaId can be added later when image upload is implemented
     }, {
       onSuccess: () => {

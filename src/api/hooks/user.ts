@@ -5,6 +5,9 @@ export interface UpdateProfileRequest {
     firstName: string;
     lastName: string;
     profileMediaId?: string;
+    phone?: string;
+    whatsapp?: string;
+    district?: string;
 }
 
 export interface UserProfileResponse {
@@ -13,6 +16,9 @@ export interface UserProfileResponse {
     lastName: string;
     role: string;
     profileMediaId: string;
+    phone?: string;
+    whatsapp?: string;
+    district?: string;
 }
 
 export const useProfile = () => {
