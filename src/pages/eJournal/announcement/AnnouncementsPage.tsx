@@ -38,20 +38,6 @@ const mockAnnouncements: Announcement[] = [
       />
     ),
   },
-  {
-    id: 3,
-    date: "July 15, 2025",
-    title: "Flow of roles",
-    description:
-      "",
-    iconSvg: (
-      <img
-        src={''}
-        alt="Custom Imported Icon"
-        className="h-full w-full object-contain"
-      />
-    ),
-  },
 ];
 
 const AnnouncementsPage = () => {
