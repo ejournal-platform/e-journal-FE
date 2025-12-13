@@ -12,10 +12,10 @@ interface Announcement {
 const mockAnnouncements: Announcement[] = [
   {
     id: 1,
-    date: "July 26, 2024",
-    title: "New Food Safety Guidelines Released",
+    date: "",
+    title: "",
     description:
-      "The Ministry of Health has issued updated guidelines on food safety, effective immediately. All trainers are required to review and incorporate these changes into their training materials.",
+      "",
     iconSvg: (
       <img
         src={''}
