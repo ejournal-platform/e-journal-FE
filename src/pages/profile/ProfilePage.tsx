@@ -5,10 +5,12 @@ import { FaLocationDot } from "react-icons/fa6";
 import { FiUser, FiSave } from "react-icons/fi";
 
 import { useProfile, useUpdateProfile } from "../../api/hooks/user";
+import { useUploadMedia } from "../../api/hooks/media";
 
 export const ProfilePage = () => {
   const { data: profileData, isLoading, error } = useProfile();
   const { mutate: updateProfile, isPending: isSaving } = useUpdateProfile();
+  const { mutateAsync: uploadMedia } = useUploadMedia();
 
   // State for fields that are updatable (First Name, Last Name)
   const [firstName, setFirstName] = useState("");
@@ -19,6 +21,9 @@ export const ProfilePage = () => {
   const [whatsapp, setWhatsapp] = useState("");
   const [district, setDistrict] = useState("");
   const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
+  // Store the profileMediaId to send on update. Initialize from profileData when loaded.
+  const [profileMediaId, setProfileMediaId] = useState<string | undefined>(undefined);
+  const [isUploading, setIsUploading] = useState(false);
 
   const [message, setMessage] = useState<string | null>(null);
   const [password, setPassword] = useState(""); // For password change
@@ -32,19 +37,47 @@ export const ProfilePage = () => {
       setPhone(profileData.phone || "");
       setWhatsapp(profileData.whatsapp || "");
       setDistrict(profileData.district || "");
+      setProfileMediaId(profileData.profileMediaId || undefined);
 
-      if (profileData.profileMediaId) {
+      if (profileData.profileMediaUrl) {
+        setProfileImage(profileData.profileMediaUrl);
+      } else if (profileData.profileMediaId) {
+        // Fallback or legacy (though backend should now send URL)
         setProfileImage(`${import.meta.env.VITE_API_BASE_URL}/media/${profileData.profileMediaId}`);
       }
     }
   }, [profileData]);
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      // Show local preview immediately
       const imageUrl = URL.createObjectURL(file);
       setProfileImage(imageUrl);
-      // Future: Here you would call an API hook to upload the image and get the profileMediaId
+
+      setIsUploading(true);
+      try {
+        // 1. Get Presigned URL
+        const { mediaId, uploadUrl } = await uploadMedia({ fileName: file.name, type: "IMAGE" });
+
+        // 2. Upload to S3
+        await fetch(uploadUrl, {
+          method: 'PUT',
+          body: file,
+          headers: {
+            'Content-Type': file.type
+          }
+        });
+
+        // 3. Store media ID for later submission
+        setProfileMediaId(mediaId);
+        setMessage("✅ Image uploaded. Click Save Changes to confirm.");
+      } catch (err) {
+        console.error("Profile upload failed", err);
+        setMessage("❌ Failed to upload image.");
+      } finally {
+        setIsUploading(false);
+      }
     }
   };
 
@@ -58,7 +91,7 @@ export const ProfilePage = () => {
       phone,
       whatsapp,
       district,
-      // profileMediaId can be added later when image upload is implemented
+      profileMediaId: profileMediaId,
     }, {
       onSuccess: () => {
         setMessage("✅ Profile updated successfully!");
@@ -265,13 +298,13 @@ export const ProfilePage = () => {
 
               <button
                 type="submit"
-                disabled={isSaving}
-                className={`w-full flex justify-center py-3 px-4 rounded-lg text-lg font-bold text-white mt-4 transition duration-200 ${isSaving
+                disabled={isSaving || isUploading}
+                className={`w-full flex justify-center py-3 px-4 rounded-lg text-lg font-bold text-white mt-4 transition duration-200 ${isSaving || isUploading
                   ? 'bg-green-400 cursor-not-allowed'
                   : 'bg-green-600 hover:bg-green-700'
                   }`}
               >
-                {isSaving ? 'Saving...' : <div className="flex justify-center items-center text-sm"><FiSave className="mr-2" /> Save Changes</div>}
+                {isSaving ? 'Saving...' : isUploading ? 'Uploading Image...' : <div className="flex justify-center items-center text-sm"><FiSave className="mr-2" /> Save Changes</div>}
               </button>
             </form>
           )}

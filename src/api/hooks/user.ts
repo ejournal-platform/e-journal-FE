@@ -19,6 +19,7 @@ export interface UserProfileResponse {
     phone?: string;
     whatsapp?: string;
     district?: string;
+    profileMediaUrl?: string; // 🟢 Full URL from backend
 }
 
 export const useProfile = () => {
