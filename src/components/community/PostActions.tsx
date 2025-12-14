@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { type CommunityPost } from "./types";
 import { FaHeart, FaRegHeart, FaComment, FaDownload, FaTrash } from "react-icons/fa";
-import { useLikePost, useAddComment, useDownloadPost } from "../../api/hooks/posts";
+import { useLikePost, useAddComment, useDownloadPost, useDeleteComment } from "../../api/hooks/posts";
+import { useProfile } from "../../api/hooks/user";
 
 interface Props {
   post: CommunityPost;
@@ -9,12 +10,13 @@ interface Props {
   onToggleComments: () => void;
 }
 
-const CURRENT_USER = "You"; // Mock current user (you can later replace with real profile)
+
 
 const PostActions = ({ post, showComments, onToggleComments }: Props) => {
   const { mutate: likePost } = useLikePost();
   const { mutate: addComment } = useAddComment();
   const { mutate: downloadPost } = useDownloadPost();
+  const { data: profile } = useProfile();
 
   const [newComment, setNewComment] = useState("");
   const [downloading, setDownloading] = useState(false);
@@ -39,12 +41,15 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
     });
   };
 
-  // Delete own comment only (Not implemented in backend yet)
-  const handleDeleteComment = (_id: string, user: string) => {
-    if (user !== CURRENT_USER) return; // not allowed
-    // setComments((prev) => prev.filter((c) => c.id !== id));
-    alert("Delete comment not implemented yet");
-    // deleteComment(id.toString());
+  const { mutate: deleteComment } = useDeleteComment();
+
+  // Delete own comment
+  const handleDeleteComment = (id: string, _user: string) => {
+    // Permission check should ideally rely on auth context, assuming 'user' here is the author's name or similar identifier
+    // But for now, we trust the UI check (and backend will verify token match).
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      deleteComment(id);
+    }
   };
 
   // Download mock file
@@ -52,7 +57,7 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
 
     // imageUrl එක නැත්නම් download එක පටන් ගන්නේ නැතුව නවතින්න කියල මේකෙන් කියනවා.
     if (!post.imageUrl) return;
-    
+
     setDownloading(true);
 
     // Increment download count
@@ -88,38 +93,38 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
       <div className="flex flex-row justify-between mt-4 border-t border-gray-100 pt-3 space-y-2 sm:space-y-0 sm:space-x-4 text-center">
         {/* Like */}
         <div>
-           <button
-          className={`${btnClass} ${hasLiked ? "text-green-600" : ""}`}
-          onClick={handleLike}
-        >
-          {hasLiked ? <FaHeart className="text-green-600 w-5 h-5" /> : <FaRegHeart className="w-5 h-5"/>}
-          <span className="hidden sm:inline">Like ({likes})</span>
-          <span className="inline sm:hidden">({likes})</span>
-        </button>
+          <button
+            className={`${btnClass} ${hasLiked ? "text-green-600" : ""}`}
+            onClick={handleLike}
+          >
+            {hasLiked ? <FaHeart className="text-green-600 w-5 h-5" /> : <FaRegHeart className="w-5 h-5" />}
+            <span className="hidden sm:inline">Like ({likes})</span>
+            <span className="inline sm:hidden">({likes})</span>
+          </button>
         </div>
-       
+
         {/* Comment Button */}
         <div>
-           <button className={btnClass} onClick={onToggleComments}>
-          <FaComment className="w-5 h-5"/>
-          <span className="hidden sm:inline">Comment ({comments.length})</span>
-          <span className="inline sm:hidden">({comments.length})</span>
+          <button className={btnClass} onClick={onToggleComments}>
+            <FaComment className="w-5 h-5" />
+            <span className="hidden sm:inline">Comment ({comments.length})</span>
+            <span className="inline sm:hidden">({comments.length})</span>
 
-        </button>
+          </button>
         </div>
-       
+
 
         {/* Download Button */}
         <div>
-           <button onClick={handleDownload} className={btnClass}>
-          <FaDownload className={`w-5 h-5 ${downloading ? "animate-bounce" : ""}`} />
-          <span className="hidden sm:inline">{downloading ? "Downloading..." : `Download (${post.downloadCount})`}</span>
-          <span className="inline sm:hidden">
-             {downloading ? "..." : `(${post.downloadCount})`}
-          </span>
-        </button>
+          <button onClick={handleDownload} className={btnClass}>
+            <FaDownload className={`w-5 h-5 ${downloading ? "animate-bounce" : ""}`} />
+            <span className="hidden sm:inline">{downloading ? "Downloading..." : `Download (${post.downloadCount})`}</span>
+            <span className="inline sm:hidden">
+              {downloading ? "..." : `(${post.downloadCount})`}
+            </span>
+          </button>
         </div>
-       
+
       </div>
 
 
@@ -141,13 +146,13 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
               <div className="bg-gray-100 px-3 py-2 rounded-lg text-gray-700 max-w-sm flex-1">
                 <div className="flex justify-between items-center">
                   <p className="font-semibold text-sm">{c.user}</p>
-                  {c.user === CURRENT_USER && (
+                  {profile && c.authorId === profile.nic && (
                     <button
                       onClick={() => handleDeleteComment(c.id, c.user)}
                       className="text-xs text-gray-500 hover:text-red-500 group-hover:inline"
                       title="Delete your comment"
                     >
-                      <FaTrash className="w-5 h-5"/>
+                      <FaTrash className="w-5 h-5" />
                     </button>
                   )}
                 </div>
