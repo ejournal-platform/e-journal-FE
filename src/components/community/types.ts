@@ -12,6 +12,7 @@ export interface CommunityPost {
   comments: CommunityComment[]; // 🟢 updated
   downloadCount: number;
   latestComment?: string;
+  profileImageUrl?: string;
 }
 
 export interface CommunityComment {

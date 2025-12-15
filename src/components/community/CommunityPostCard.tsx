@@ -5,7 +5,6 @@ import type { CommunityPost } from "./types";
 import { FaFilePdf } from "react-icons/fa";
 
 const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
-  const initials = post.author.split(" ").map(n => n[0]).join("");
   const [showComments, setShowComments] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -28,7 +27,11 @@ const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
       {/* Header */}
       <div className="flex items-center mb-4">
         <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-700 font-semibold text-sm mr-3">
-          {initials}
+          {post.profileImageUrl ? (
+            <img src={post.profileImageUrl} alt={post.author} className="w-full h-full object-cover rounded-full" />
+          ) : (
+            post.author[0]
+          )}
         </div>
         <div>
           <p className="font-bold text-gray-800">{post.author}</p>

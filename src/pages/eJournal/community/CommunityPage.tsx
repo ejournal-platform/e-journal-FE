@@ -32,6 +32,7 @@ const CommunityPage = () => {
       return {
         id: post.id,
         author: `${post.author.firstName} ${post.author.lastName}`.trim() || "Unknown Author",
+        profileImageUrl: post.author.profileMediaUrl,
         date: new Date(post.createdAt).toLocaleDateString(),
         text: post.caption,
         imageUrl: imageUrls.length > 0 ? imageUrls[0] : undefined,
@@ -51,31 +52,6 @@ const CommunityPage = () => {
       };
     });
   }, [postsData]);
-
-  // const handleCreatePost = () => {
-  //   if (!newPostText.trim()) return;
-  //   createPost({ caption: newPostText }, {
-  //     onSuccess: () => {
-  //       setNewPostText("");
-  //     }
-  //   });
-  // };
-
-  //   const handleLike = (id: number) => {
-  //     setPosts(prev =>
-  //       prev.map(post => post.id === id ? { ...post, likes: post.likes + 1 } : post)
-  //     );
-  //   };
-
-  //   const handleAddComment = (id: number, comment: string) => {
-  //     setPosts(prev =>
-  //       prev.map(post =>
-  //         post.id === id
-  //           ? { ...post, comments: post.comments + 1, latestComment: comment }
-  //           : post
-  //       )
-  //     );
-  //   };
 
   return (
     <div className="p-4 sm:p-8 w-full max-w-xl mx-auto">
