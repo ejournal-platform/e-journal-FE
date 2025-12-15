@@ -19,7 +19,7 @@ import "./App.css";
 import { useAuth } from "./context/AuthContext";
 
 const App = () => {
-  const { userRole, token, nic, logout } = useAuth();
+  const { userRole, token, logout } = useAuth();
   const isLoggedIn = !!token;
 
   return (
@@ -53,7 +53,7 @@ const App = () => {
         {isLoggedIn && userRole && (
           <Route
             path="/dashboard"
-            element={<DashboardLayout role={userRole} nic={nic || ""} onLogout={logout} />}
+            element={<DashboardLayout onLogout={logout} />}
           >
             <Route index element={<Navigate to="community" replace />} />
             <Route path="upload" element={<UploadActivityPage />} />
