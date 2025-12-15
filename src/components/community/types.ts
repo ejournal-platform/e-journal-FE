@@ -18,5 +18,6 @@ export interface CommunityComment {
   id: string;
   user: string;
   authorId: string; // 🟢 Author ID for permission checks
+  profileImageUrl?: string; // 🟢 Profile image URL
   text: string;
 }

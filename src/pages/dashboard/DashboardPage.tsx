@@ -19,20 +19,20 @@ const DashboardPage = ({ nic, role }: DashboardPageProps) => {
   });
 
   const handleCardClick = (activity: string) => {
-  if (activity === 'Upload Activity') {
-    navigate('/dashboard/upload');
-  } else if (activity === 'View Submissions') {
-    navigate('/dashboard/submissions');
-  } else if (activity === 'Announcements') {
-    navigate('/dashboard/announcements');
-  } else if (activity === 'Community Feed') {
-    navigate('/dashboard/community');
-  }
-};
+    if (activity === 'Upload Activity') {
+      navigate('/dashboard/upload');
+    } else if (activity === 'View Submissions') {
+      navigate('/dashboard/submissions');
+    } else if (activity === 'Announcements') {
+      navigate('/dashboard/announcements');
+    } else if (activity === 'Community Feed') {
+      navigate('/dashboard/community');
+    }
+  };
 
-const handleProfileClick = () => {
-  navigate("/profile"); // if using React Router
-};
+  const handleProfileClick = () => {
+    navigate("/profile"); // if using React Router
+  };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
@@ -46,7 +46,7 @@ const handleProfileClick = () => {
 
           <div
             className="flex items-center space-x-3 cursor-pointer hover:text-green-600 transition"
-            onClick={handleProfileClick} 
+            onClick={handleProfileClick}
           >
             <div className="w-10 h-10 flex items-center justify-center rounded-full bg-green-100 border-2 border-green-500 text-green-700">
               <FiUser className="w-5 h-5" />

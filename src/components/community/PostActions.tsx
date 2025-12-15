@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { type CommunityPost } from "./types";
-import { FaHeart, FaRegHeart, FaComment, FaDownload, FaTrash } from "react-icons/fa";
-import { useLikePost, useAddComment, useDownloadPost, useDeleteComment } from "../../api/hooks/posts";
+import { FaHeart, FaRegHeart, FaComment, FaTrash } from "react-icons/fa";
+import { useLikePost, useAddComment, useDeleteComment } from "../../api/hooks/posts";
 import { useProfile } from "../../api/hooks/user";
 
 interface Props {
@@ -15,11 +15,9 @@ interface Props {
 const PostActions = ({ post, showComments, onToggleComments }: Props) => {
   const { mutate: likePost } = useLikePost();
   const { mutate: addComment } = useAddComment();
-  const { mutate: downloadPost } = useDownloadPost();
   const { data: profile } = useProfile();
 
   const [newComment, setNewComment] = useState("");
-  const [downloading, setDownloading] = useState(false);
 
   // Use props for state, assuming parent updates on mutation success (via query invalidation)
   const likes = post.likes;
@@ -47,43 +45,12 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
   const handleDeleteComment = (id: string, _user: string) => {
     // Permission check should ideally rely on auth context, assuming 'user' here is the author's name or similar identifier
     // But for now, we trust the UI check (and backend will verify token match).
-    if (window.confirm("Are you sure you want to delete this comment?")) {
-      deleteComment(id);
-    }
+    // if (window.confirm("Are you sure you want to delete this comment?")) {
+    deleteComment(id);
+    // }
   };
 
-  // Download mock file
-  const handleDownload = async () => {
 
-    // imageUrl එක නැත්නම් download එක පටන් ගන්නේ නැතුව නවතින්න කියල මේකෙන් කියනවා.
-    if (!post.imageUrl) return;
-
-    setDownloading(true);
-
-    // Increment download count
-    downloadPost(post.id.toString());
-
-    if (!post.imageUrl) {
-      alert("No image to download.");
-      setDownloading(false);
-      return;
-    }
-    try {
-      // If multiple images, maybe download all? For now just the first one or the one in imageUrl
-      const response = await fetch(post.imageUrl);
-      const blob = await response.blob();
-      const blobUrl = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = blobUrl;
-      link.download = `Post-${post.id}.jpg`;
-      link.click();
-      URL.revokeObjectURL(blobUrl);
-    } catch (e) {
-      console.error("Download failed", e);
-    } finally {
-      setDownloading(false);
-    }
-  };
 
   const btnClass =
     "flex items-center space-x-2 text-gray-600 hover:text-green-600 transition duration-150 p-2 rounded-lg text-sm font-medium w-full justify-center sm:w-auto";
@@ -113,21 +80,9 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
           </button>
         </div>
 
-
         {/* Download Button */}
-        <div>
-          <button onClick={handleDownload} className={btnClass}>
-            <FaDownload className={`w-5 h-5 ${downloading ? "animate-bounce" : ""}`} />
-            <span className="hidden sm:inline">{downloading ? "Downloading..." : `Download (${post.downloadCount})`}</span>
-            <span className="inline sm:hidden">
-              {downloading ? "..." : `(${post.downloadCount})`}
-            </span>
-          </button>
-        </div>
 
       </div>
-
-
       {/* Comments Section */}
       {showComments && (
         <div className="mt-4 space-y-3">
@@ -138,21 +93,25 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
           {comments.map((c) => (
             <div key={c.id} className="flex items-start space-x-3 group">
               {/* Avatar */}
-              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold text-gray-700">
-                {c.user[0]}
+              <div className="w-8 h-8 rounded-full bg-gray-300 flex items-center justify-center text-xs font-bold text-gray-700 overflow-hidden">
+                {c.profileImageUrl ? (
+                  <img src={c.profileImageUrl} alt={c.user} className="w-full h-full object-cover" />
+                ) : (
+                  c.user[0]
+                )}
               </div>
 
               {/* Comment bubble */}
               <div className="bg-gray-100 px-3 py-2 rounded-lg text-gray-700 max-w-sm flex-1">
                 <div className="flex justify-between items-center">
                   <p className="font-semibold text-sm">{c.user}</p>
-                  {profile && c.authorId === profile.nic && (
+                  {profile && (c.authorId === profile.nic || c.authorId === profile.id) && (
                     <button
                       onClick={() => handleDeleteComment(c.id, c.user)}
                       className="text-xs text-gray-500 hover:text-red-500 group-hover:inline"
                       title="Delete your comment"
                     >
-                      <FaTrash className="w-5 h-5" />
+                      <FaTrash className="w-3 h-3" />
                     </button>
                   )}
                 </div>

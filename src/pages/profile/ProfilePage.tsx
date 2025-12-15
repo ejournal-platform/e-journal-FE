@@ -1,6 +1,5 @@
 import React, { useState, type FormEvent } from "react";
-import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
-import { FaLock, FaWhatsapp } from "react-icons/fa";
+import { FaWhatsapp } from "react-icons/fa";
 import { FaLocationDot } from "react-icons/fa6";
 import { FiUser, FiSave } from "react-icons/fi";
 
@@ -26,8 +25,6 @@ export const ProfilePage = () => {
   const [isUploading, setIsUploading] = useState(false);
 
   const [message, setMessage] = useState<string | null>(null);
-  const [password, setPassword] = useState(""); // For password change
-  const [showPassword, setShowPassword] = useState(false);
 
   // Update local state when profile data loads
   React.useEffect(() => {
@@ -268,11 +265,11 @@ export const ProfilePage = () => {
               </div>
 
               {/* Change Password (Added from HEAD logic, using local state) */}
-              <div className="relative">
+              {/* <div className="relative">
                 <label className="block text-sm font-semibold text-gray-700 mb-1">
                   Change Password
                 </label>
-                <div className="flex items-center bg-gray-100 rounded-lg px-4 py-3">
+                <div className="flex items-center justify-center bg-gray-100 rounded-lg px-4 py-3">
                   <FaLock className="text-gray-500 mr-2" />
                   <input
                     id="password"
@@ -285,12 +282,12 @@ export const ProfilePage = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute top-1/2 -translate-y-1/2 right-3 text-gray-500 hover:text-gray-700"
+                    className=" text-center text-gray-500 hover:text-gray-700"
                   >
                     {showPassword ? <AiFillEyeInvisible size={20} /> : <AiFillEye size={20} />}
                   </button>
                 </div>
-              </div>
+              </div> */}
 
               {message && (
                 <p className="text-center text-sm text-green-600 bg-green-50 p-2 rounded-lg">{message}</p>

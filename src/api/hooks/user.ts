@@ -20,6 +20,7 @@ export interface UserProfileResponse {
     whatsapp?: string;
     district?: string;
     profileMediaUrl?: string; // 🟢 Full URL from backend
+    id: string; // 🟢 Added for permission checks
 }
 
 export const useProfile = () => {

@@ -8,10 +8,10 @@ import { useCreatePost } from "../../../api/hooks/posts";
 import { useNavigate } from "react-router-dom";
 
 const getFileType = (mimeType: string): "image" | "pdf" | "video" | null => {
-    if (mimeType.startsWith("image/")) return "image";
-    if (mimeType === "application/pdf") return "pdf";
-    if (mimeType.startsWith("video/")) return "video";
-    return null;
+  if (mimeType.startsWith("image/")) return "image";
+  if (mimeType === "application/pdf") return "pdf";
+  if (mimeType.startsWith("video/")) return "video";
+  return null;
 };
 
 const UploadActivityPage: React.FC = () => {
@@ -28,76 +28,94 @@ const UploadActivityPage: React.FC = () => {
 
   const [fileType, setFileType] = useState<"image" | "pdf" | "video" | null>(null);
 
- const handleFileAdd = async (newFiles: File[]) => {
-    if (newFiles.length === 0) return;
+  const handleFileAdd = async (newFiles: File[]) => {
+    if (newFiles.length === 0) return;
 
-    const firstType = newFiles[0].type;
-    const newType = getFileType(firstType);
+    const firstType = newFiles[0].type;
+    const newType = getFileType(firstType);
 
-    if (!newType) {
-      alert("❌ Only images, PDFs, or videos are allowed.");
-      return;
-    }
+    if (!newType) {
+      alert("❌ Only images, PDFs, or videos are allowed.");
+      return;
+    }
 
-    // Prevent mixing different file types
-    if (fileType && fileType !== newType) {
-      alert(`❌ You can upload only one type of file (${fileType.toUpperCase()}) at a time.`);
-      return;
-    }
+    // Prevent mixing different file types
+    if (fileType && fileType !== newType) {
+      alert(`❌ You can upload only one type of media per post. Currently selected: ${fileType.toUpperCase()}`);
+      return;
+    }
 
-    // Check limits
-    const totalFiles = files.length + newFiles.length;
-    const maxFiles = newType === "image" ? 5 : 3;
+    // STRICT VALIDATION RULES
+    if (newType === "pdf") {
+      if (files.length > 0 || newFiles.length > 1) {
+        alert("❌ You can upload only ONE PDF per post.");
+        return;
+      }
+    } else if (newType === "video") {
+      if (files.length > 0 || newFiles.length > 1) {
+        alert("❌ You can upload only ONE video per post.");
+        return;
+      }
+      // Check video size (200MB = 200 * 1024 * 1024 bytes)
+      const maxVideoSize = 200 * 1024 * 1024;
+      if (newFiles[0].size > maxVideoSize) {
+        alert("❌ Video size must be below 200MB.");
+        return;
+      }
+    } else if (newType === "image") {
+      const totalImages = files.length + newFiles.length;
+      if (totalImages > 4) {
+        alert("❌ You can upload a maximum of 4 images per post.");
+        return;
+      }
+      if (totalImages < 1) {
+        alert("❌ You must upload at least 1 image.");
+        return;
+      }
+    }
 
-    if (totalFiles > maxFiles) {
-      alert(
-        `❌ You can upload a maximum of ${maxFiles} ${newType.toUpperCase()} files.`
-      );
-      return;
-    }
+    // Add to state and set/update fileType
+    setFiles((prev) => [...prev, ...newFiles]);
+    setFileType(newType);
 
-    // Add to state and set/update fileType
-    setFiles((prev) => [...prev, ...newFiles]);
-    setFileType(newType);
+    // --- Start Upload Process ---
+    setIsUploading(true);
+    try {
+      const uploadPromises = newFiles.map(async (file) => {
+        // Determine type for backend hook
+        const mediaType = newType === 'image' ? 'IMAGE' : 'DOCUMENT';
 
-    // --- Start Upload Process ---
-    setIsUploading(true);
-    try {
-      const uploadPromises = newFiles.map(async (file) => {
-        // Determine type for backend hook
-        const mediaType = newType === 'image' ? 'IMAGE' : 'DOCUMENT';
+        // 1. Get Presigned URL and mediaId
+        const { mediaId, uploadUrl } = await uploadMedia({ fileName: file.name, type: mediaType });
 
-        // 1. Get Presigned URL and mediaId
-        const { mediaId, uploadUrl } = await uploadMedia({ fileName: file.name, type: mediaType });
+        // 2. Upload file content directly to the signed URL (e.g., S3)
+        await fetch(uploadUrl, {
+          method: 'PUT',
+          body: file,
+          headers: {
+            'Content-Type': file.type,
+          }
+        });
 
-        // 2. Upload file content directly to the signed URL (e.g., S3)
-        await fetch(uploadUrl, {
-          method: 'PUT',
-          body: file,
-          headers: {
-            'Content-Type': file.type,
-          }
-        });
+        return mediaId;
+      });
 
-        return mediaId;
-      });
-
-      const mediaIds = await Promise.all(uploadPromises);
-      setUploadedMediaIds((prev) => [...prev, ...mediaIds]);
-    } catch (error) {
-      console.error("Failed to upload files", error);
-      alert("Failed to upload some files. Please try again.");
-      // Note: In a production app, we should also clean up the files state if upload failed.
-    } finally {
-      setIsUploading(false);
-    }
-  };
+      const mediaIds = await Promise.all(uploadPromises);
+      setUploadedMediaIds((prev) => [...prev, ...mediaIds]);
+    } catch (error) {
+      console.error("Failed to upload files", error);
+      alert("Failed to upload some files. Please try again.");
+      // Note: In a production app, we should also clean up the files state if upload failed.
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   // Reset fileType when all files are removed
   const handleRemoveFile = (index: number) => {
     setFiles((prev) => {
       const updated = prev.filter((_, i) => i !== index);
-      
+
       if (updated.length === 0) setFileType(null);
       return updated;
     });

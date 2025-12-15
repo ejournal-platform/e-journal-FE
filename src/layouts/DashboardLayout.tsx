@@ -3,26 +3,25 @@ import Sidebar from "../components/layout/Sidebar";
 import logo from "../assets/logo.jpg";
 import { FiUser, FiMenu, FiX } from "react-icons/fi";
 import { useState } from "react";
-import type { UserRole } from "../components/ui/Input";
 import bgImage from '../assets/background/bg2.jpeg'
+import { useProfile } from "../api/hooks/user";
 
 interface DashboardLayoutProps {
-  nic?: string;
-  role: UserRole;
   onLogout?: () => void;
 }
 
-const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
+const DashboardLayout = ({ onLogout }: DashboardLayoutProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  const [user] = useState({
-    name: nic || "User",
-    role: role,
-  });
+  const { data: profileData } = useProfile();
+
+  const userName = profileData ? `${profileData.firstName}` : 'User';
+  const userRole = profileData ? `${profileData.role}` : 'Guest';
+  const profileImage = profileData ? `${profileData.profileMediaUrl}` : '';
 
   const handleLogOut = () => {
     if (onLogout) {
@@ -55,13 +54,24 @@ const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
         </div>
 
         <div className="flex items-center space-x-3 hover:text-green-600 transition">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-green-100 border-2 border-green-500 text-green-700">
-            <FiUser className="w-4 h-4 sm:w-5 sm:h-5" />
+
+          <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-red-100 border-2 border-green-500 text-green-700">
+            {profileImage ? (
+              <img src={profileImage} alt="Profile" className="w-full h-full object-cover rounded-full" />
+            ) : (
+              <FiUser className="w-4 h-4 sm:w-5 sm:h-5" />
+            )}
           </div>
-          <p className="text-gray-600 text-xs sm:text-sm">
-            Role:{" "}
-            <span className="font-semibold text-green-700">{user.role}</span>
-          </p>
+          <div className="flex flex-col">
+            <p className="text-gray-600 text-xs sm:text-sm font-semibold">
+              Name:{" "}
+              <span className="font-semibold text-red-400">{userName}</span>
+            </p>
+            <p className="text-gray-600 text-xs sm:text-sm font-semibold">
+              Role: {" "}
+              <span className="font-semibold text-green-700">{userRole}</span>
+            </p>
+          </div>
         </div>
       </header>
 
@@ -78,7 +88,7 @@ const DashboardLayout = ({ nic, role, onLogout }: DashboardLayoutProps) => {
               navigate(path);
               setIsSidebarOpen(false);
             }}
-            userRole={user.role || ""}
+            userRole={userRole || ""}
             openLogoutCard={() => setShowConfirm(true)}
           />
         </aside>
