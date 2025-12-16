@@ -156,8 +156,8 @@ export const ProfilePage = () => {
                     placeholder="First Name"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full bg-transparent outline-none text-gray-800"
-                    required
+                    className="w-full bg-transparent outline-none text-gray-800 cursor-not-allowed"
+                    disabled
                   />
                 </div>
               </div>
@@ -174,8 +174,8 @@ export const ProfilePage = () => {
                     placeholder="Last Name"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
-                    className="w-full bg-transparent outline-none text-gray-800"
-                    required
+                    className="w-full bg-transparent outline-none text-gray-800 cursor-not-allowed"
+                    disabled
                   />
                 </div>
               </div>
