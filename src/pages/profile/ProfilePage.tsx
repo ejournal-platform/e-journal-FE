@@ -175,7 +175,7 @@ export const ProfilePage = () => {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     className="w-full bg-transparent outline-none text-gray-800 cursor-not-allowed"
-                    disabled
+                    required
                   />
                 </div>
               </div>
