@@ -17,7 +17,6 @@ const getFileType = (mimeType: string): "image" | "pdf" | "video" | null => {
 const UploadActivityPage: React.FC = () => {
   const [activityTitle, setActivityTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [uploadedMediaIds, setUploadedMediaIds] = useState<string[]>([]);
   const [isUploading, setIsUploading] = useState(false);
@@ -120,9 +119,6 @@ const UploadActivityPage: React.FC = () => {
       return updated;
     });
 
-    // Dula code
-    // setFiles((prev) => prev.filter((_, i) => i !== index));
-
     setUploadedMediaIds((prev) => prev.filter((_, i) => i !== index));
   };
 
@@ -155,6 +151,23 @@ const UploadActivityPage: React.FC = () => {
     });
   };
 
+  const getTodayDate = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    let mm = today.getMonth() + 1; // Month is 0-indexed
+    let dd = today.getDate();
+
+    // if Single digit, plus 0
+    const formattedMonth = mm < 10 ? '0' + mm : mm;
+    const formattedDay = dd < 10 ? '0' + dd : dd;
+
+    return `${yyyy}-${formattedMonth}-${formattedDay}`;
+  };
+
+  const todayDate = getTodayDate();
+
+  const [date, setDate] = useState(todayDate);
+
   return (
     <div className="flex min-h-screen">
       <main className="grow p-8">
@@ -165,7 +178,7 @@ const UploadActivityPage: React.FC = () => {
             date={date}
             setActivityTitle={setActivityTitle}
             setDescription={setDescription}
-            setDate={setDate}
+          // setDate={setDate}
           />
 
           <div className="bg-white p-8 rounded-xl shadow-lg">
