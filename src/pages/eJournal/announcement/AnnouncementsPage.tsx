@@ -1,4 +1,3 @@
-import { type ReactNode } from "react";
 import AnnouncementList from "../../../components/announcements/AnnouncementList";
 import { useGetAnnouncements } from "../../../api/hooks/announcement";
 import { FaBullhorn } from "react-icons/fa"; // Fallback icon
