@@ -2,16 +2,16 @@ import { type ReactNode } from "react";
 import AnnouncementCard from "./AnnouncementCard";
 
 interface Props {
-    announcements: {
-        id: number;
-        date: string;
-        title: string;
-        description: string;
-        iconSvg: ReactNode;
-    }[];
+  announcements: {
+    id: string;
+    date: string;
+    title: string;
+    description: string;
+    iconSvg: ReactNode;
+  }[];
 }
 
-const AnnouncementList = ({ announcements } : Props) => {
+const AnnouncementList = ({ announcements }: Props) => {
   return (
     <div className=" p-8 divide-y divide-gray-100">
       {announcements.map((a) => (

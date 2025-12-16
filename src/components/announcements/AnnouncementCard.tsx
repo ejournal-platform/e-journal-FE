@@ -2,7 +2,7 @@ import { type ReactNode } from "react";
 
 interface Props {
   announcement: {
-    id: number;
+    id: string;
     date: string;
     title: string;
     description: string;
