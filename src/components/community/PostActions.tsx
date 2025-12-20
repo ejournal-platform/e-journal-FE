@@ -105,7 +105,7 @@ const PostActions = ({ post, showComments, onToggleComments }: Props) => {
               <div className="bg-gray-100 px-3 py-2 rounded-lg text-gray-700 max-w-sm flex-1">
                 <div className="flex justify-between items-center">
                   <p className="font-semibold text-sm">{c.user}</p>
-                  {profile && (c.authorId === profile.nic || c.authorId === profile.id || profile.role === 'Admin') && (
+                  {profile && (c.authorId === profile.nic || c.authorId === profile.id || profile.role === 'admin') && (
                     <button
                       onClick={() => handleDeleteComment(c.id, c.user)}
                       className="text-xs text-gray-500 hover:text-red-500 group-hover:inline"
