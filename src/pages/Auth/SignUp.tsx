@@ -116,8 +116,6 @@ const Signup = () => {
             onChange={(e) => setNic(e.target.value)}
             required
           />
-          {/* Role Selector */}
-          {/* <RoleSelector value={role} onChange={setRole} /> */}
 
           {/* Password Input */}
           <div className="relative">
