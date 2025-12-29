@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, RoleSelector, type UserRole } from "../../components/ui/Input";
+import { Input, type UserRole } from "../../components/ui/Input";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/logo.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -68,14 +68,14 @@ const Signup = () => {
 
   return (
     <div className=" min-h-screen w-full bg-gray-50 flex flex-col font-sans items-center justify-center">
-      
+
       <div
         className="fixed z-10 opacity-30 pointer-events-none" >
         <img src={bgImage} alt="App Logo" className="w-full" />
       </div>
 
       <div className="relative z-20 flex flex-col min-h-screen w-full items-center">
-        
+
         <header className="py-2 px-6 w-full mb-9">
           <div className="flex items-center text-xl font-bold text-gray-800 font-sans">
             <img src={logo} alt="App Logo" className="h-12 w-12 object-contain mr-2" />
@@ -99,8 +99,8 @@ const Signup = () => {
           {message && (
             <div
               className={`p-3 mb-6 rounded-lg text-sm font-medium ${message.type === "error"
-                  ? "bg-red-100 text-red-700"
-                  : "bg-green-100 text-green-700"}`}
+                ? "bg-red-100 text-red-700"
+                : "bg-green-100 text-green-700"}`}
             >
               {message.text}
             </div>
@@ -117,7 +117,7 @@ const Signup = () => {
             required
           />
           {/* Role Selector */}
-          <RoleSelector value={role} onChange={setRole} />
+          {/* <RoleSelector value={role} onChange={setRole} /> */}
 
           {/* Password Input */}
           <div className="relative">
