@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, type UserRole } from "../../components/ui/Input";
+import { Input } from "../../components/ui/Input";
 import { AiFillEye, AiFillEyeInvisible } from "react-icons/ai";
 import logo from "../../assets/logo.jpg";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
