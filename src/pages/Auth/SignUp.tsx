@@ -25,7 +25,6 @@ const Signup = () => {
   const [nic, setNic] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [role, setRole] = useState<UserRole>(null);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [message, setMessage] = useState<{ type: "error" | "success"; text: string } | null>(null);
@@ -35,7 +34,7 @@ const Signup = () => {
     e.preventDefault();
     setMessage(null);
 
-    if (!nic.trim() || !password.trim() || !confirmPassword.trim() || !role) {
+    if (!nic.trim() || !password.trim() || !confirmPassword.trim()) {
       setMessage({ type: "error", text: "Please fill in all fields." });
       return;
     }
@@ -53,7 +52,6 @@ const Signup = () => {
           setNic("");
           setPassword("");
           setConfirmPassword("");
-          setRole(null);
 
           // Redirect to login after short delay
           setTimeout(() => navigate("/signIn"), 1000);
@@ -93,7 +91,7 @@ const Signup = () => {
             Create an Account
           </h1>
           <p className="text-sm text-gray-600 font-semibold text-center mb-4">
-            Sign up with your NIC, role, and password.
+            Sign up with your NIC and password.
           </p>
 
           {message && (
