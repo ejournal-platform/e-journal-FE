@@ -117,7 +117,7 @@ const Signup = () => {
             required
           />
           {/* Role Selector */}
-          {/* <RoleSelector value={role} onChange={setRole} /> */}
+          <RoleSelector value={role} onChange={setRole} />
 
           {/* Password Input */}
           <div className="relative">
