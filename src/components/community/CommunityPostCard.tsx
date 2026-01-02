@@ -8,11 +8,25 @@ const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
   const [showComments, setShowComments] = useState(false);
   const [isViewerOpen, setIsViewerOpen] = useState(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const openViewer = (index: number) => {
     setCurrentImageIndex(index);
     setIsViewerOpen(true);
   };
+
+  // Text cleaning logic
+  const cleanedText = post.text
+    .replace(/^\*\*\*\*\s+/, '')
+    .replace(/\s+Date:.*$/, '');
+
+  const words = cleanedText.split(/\s+/);
+  const shouldTruncate = words.length > 20;
+
+  // Display කරන text එක තීරණය කිරීම
+  const displayedText = isExpanded || !shouldTruncate
+    ? cleanedText
+    : words.slice(0, 20).join(' ') + '...';
 
   // Calculate offsets for MediaViewer navigation
   const images = post.imageUrls && post.imageUrls.length > 0 ? post.imageUrls : (post.imageUrl ? [post.imageUrl] : []);
@@ -40,12 +54,19 @@ const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
       </div>
 
       {/* Text */}
-      <p className="text-gray-700 mb-4">
-        {post.text
-          .replace(/^\*\*\*\*\s+/, '')
-          .replace(/\s+Date:.*$/, '')
-        }
-      </p>
+      <div className="text-gray-700 mb-4">
+        <p className="inline">
+          {displayedText}
+        </p>
+        {shouldTruncate && (
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="text-blue-600 hover:text-blue-800 font-medium ml-1 cursor-pointer focus:outline-none"
+          >
+            {isExpanded ? ' Show less' : ' see more'}
+          </button>
+        )}
+      </div>
 
       {/* Image Grid */}
       {post.imageUrls && post.imageUrls.length > 0 && (
