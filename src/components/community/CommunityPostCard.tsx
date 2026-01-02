@@ -40,7 +40,12 @@ const CommunityPostCard = ({ post }: { post: CommunityPost }) => {
       </div>
 
       {/* Text */}
-      <p className="text-gray-700 mb-4">{post.text.split('\n')[2]}</p>
+      <p className="text-gray-700 mb-4">
+        {post.text
+          .replace(/^\*\*\*\*\s+/, '')
+          .replace(/\s+Date:.*$/, '')
+        }
+      </p>
 
       {/* Image Grid */}
       {post.imageUrls && post.imageUrls.length > 0 && (
