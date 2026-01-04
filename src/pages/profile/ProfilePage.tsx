@@ -21,7 +21,7 @@ export const ProfilePage = () => {
   const [district, setDistrict] = useState("");
   const [profileImage, setProfileImage] = useState<string | undefined>(undefined);
   // Store the profileMediaId to send on update. Initialize from profileData when loaded.
-  const [profileMediaId, setProfileMediaId] = useState<string | undefined>(undefined);
+  const [profileMediaId, setProfileMediaId] = useState<string | null | undefined>(undefined);
   const [isUploading, setIsUploading] = useState(false);
 
   const [message, setMessage] = useState<string | null>(null);
@@ -78,6 +78,12 @@ export const ProfilePage = () => {
     }
   };
 
+  const handleRemoveImage = () => {
+    setProfileImage(undefined);
+    setProfileMediaId(null);
+    setMessage("🗑️ Profile picture removed. Click Save Changes to confirm.");
+  };
+
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     setMessage(null);
@@ -105,11 +111,11 @@ export const ProfilePage = () => {
       <main className="grow flex items-center justify-center p-6">
         <div className="w-full max-w-lg bg-white rounded-xl shadow-lg p-8 border border-gray-300">
           <div className="flex flex-col items-center mb-8">
-            <div className="relative">
+            <div className="relative group">
               {/* Profile Image or Default Icon */}
               <div
                 onClick={() => document.getElementById("fileInput")?.click()}
-                className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-4xl font-bold cursor-pointer hover:bg-green-200 transition"
+                className="w-24 h-24 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-4xl font-bold cursor-pointer hover:bg-green-200 transition relative overflow-hidden"
               >
                 {profileImage ? (
                   <img
@@ -121,6 +127,34 @@ export const ProfilePage = () => {
                   <FiUser className="w-10 h-10" />
                 )}
               </div>
+
+              {/* Remove Button (only visible if image exists) */}
+              {profileImage && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleRemoveImage();
+                  }}
+                  className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full p-1.5 shadow-md hover:bg-red-600 transition-colors z-10"
+                  title="Remove Profile Picture"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2.5}
+                    stroke="currentColor"
+                    className="w-3.5 h-3.5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M6 18L18 6M6 6l12 12"
+                    />
+                  </svg>
+                </button>
+              )}
 
               {/* Hidden file input for image upload (from HEAD) */}
               <input

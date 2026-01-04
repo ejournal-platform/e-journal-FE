@@ -4,7 +4,7 @@ import client from '../client';
 export interface UpdateProfileRequest {
     firstName: string;
     lastName: string;
-    profileMediaId?: string;
+    profileMediaId?: string | null;
     phone?: string;
     whatsapp?: string;
     district?: string;
