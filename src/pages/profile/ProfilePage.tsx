@@ -80,7 +80,7 @@ export const ProfilePage = () => {
 
   const handleRemoveImage = () => {
     setProfileImage(undefined);
-    setProfileMediaId(null);
+    setProfileMediaId("");
     setMessage("🗑️ Profile picture removed. Click Save Changes to confirm.");
   };
 
